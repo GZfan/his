@@ -16,7 +16,7 @@ import com.neuedu.pojo.Settlecategory;
 import javax.annotation.Resource;
 
 
-//结算类别类控制类
+//  结算类别类控制类
 @Controller
 @RequestMapping("/calculationType")
 public class CalculationTypeController {
