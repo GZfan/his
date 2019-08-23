@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.HerbaldetailedMapper">
+  <resultMap id="BaseResultMap" type="com.neuedu.pojo.Herbaldetailed">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="HerbalPresID" jdbcType="INTEGER" property="herbalpresid" />
+    <result column="HerbalID" jdbcType="INTEGER" property="herbalid" />
+    <result column="Dosage" jdbcType="VARCHAR" property="dosage" />
+    <result column="Price" jdbcType="DECIMAL" property="price" />
+    <result column="Footnote" jdbcType="VARCHAR" property="footnote" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, HerbalPresID, HerbalID, Dosage, Price, Footnote
+  </sql>
+  <select id="selectByExample" parameterType="com.neuedu.pojo.HerbaldetailedExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from HerbalDetailed
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from HerbalDetailed
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from HerbalDetailed
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neuedu.pojo.HerbaldetailedExample">
+    delete from HerbalDetailed
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.pojo.Herbaldetailed">
+    insert into HerbalDetailed (ID, HerbalPresID, HerbalID, 
+      Dosage, Price, Footnote
+      )
+    values (#{id,jdbcType=INTEGER}, #{herbalpresid,jdbcType=INTEGER}, #{herbalid,jdbcType=INTEGER}, 
+      #{dosage,jdbcType=VARCHAR}, #{price,jdbcType=DECIMAL}, #{footnote,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Herbaldetailed">
+    insert into HerbalDetailed
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="herbalpresid != null">
+        HerbalPresID,
+      </if>
+      <if test="herbalid != null">
+        HerbalID,
+      </if>
+      <if test="dosage != null">
+        Dosage,
+      </if>
+      <if test="price != null">
+        Price,
+      </if>
+      <if test="footnote != null">
+        Footnote,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="herbalpresid != null">
+        #{herbalpresid,jdbcType=INTEGER},
+      </if>
+      <if test="herbalid != null">
+        #{herbalid,jdbcType=INTEGER},
+      </if>
+      <if test="dosage != null">
+        #{dosage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="footnote != null">
+        #{footnote,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neuedu.pojo.HerbaldetailedExample" resultType="java.lang.Long">
+    select count(*) from HerbalDetailed
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update HerbalDetailed
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.herbalpresid != null">
+        HerbalPresID = #{record.herbalpresid,jdbcType=INTEGER},
+      </if>
+      <if test="record.herbalid != null">
+        HerbalID = #{record.herbalid,jdbcType=INTEGER},
+      </if>
+      <if test="record.dosage != null">
+        Dosage = #{record.dosage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        Price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.footnote != null">
+        Footnote = #{record.footnote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update HerbalDetailed
+    set ID = #{record.id,jdbcType=INTEGER},
+      HerbalPresID = #{record.herbalpresid,jdbcType=INTEGER},
+      HerbalID = #{record.herbalid,jdbcType=INTEGER},
+      Dosage = #{record.dosage,jdbcType=VARCHAR},
+      Price = #{record.price,jdbcType=DECIMAL},
+      Footnote = #{record.footnote,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.Herbaldetailed">
+    update HerbalDetailed
+    <set>
+      <if test="herbalpresid != null">
+        HerbalPresID = #{herbalpresid,jdbcType=INTEGER},
+      </if>
+      <if test="herbalid != null">
+        HerbalID = #{herbalid,jdbcType=INTEGER},
+      </if>
+      <if test="dosage != null">
+        Dosage = #{dosage,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        Price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="footnote != null">
+        Footnote = #{footnote,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.pojo.Herbaldetailed">
+    update HerbalDetailed
+    set HerbalPresID = #{herbalpresid,jdbcType=INTEGER},
+      HerbalID = #{herbalid,jdbcType=INTEGER},
+      Dosage = #{dosage,jdbcType=VARCHAR},
+      Price = #{price,jdbcType=DECIMAL},
+      Footnote = #{footnote,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

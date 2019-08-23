@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.ChargedMapper">
+	<resultMap id="CheckapplyResultMap" type="com.neuedu.pojo.CheckPack">
+     <association property="checkapply" javaType="com.neuedu.pojo.Checkapply">
+        <id column="CID" jdbcType="INTEGER" property="id" />
+	    <result column="MedicalID" jdbcType="INTEGER" property="medicalid" />
+	    <result column="RegistID" jdbcType="INTEGER" property="registid" />
+	    <result column="ItemID" jdbcType="INTEGER" property="itemid" />
+	    <result column="Name" jdbcType="VARCHAR" property="name" />
+	    <result column="Objective" jdbcType="VARCHAR" property="objective" />
+	    <result column="Position" jdbcType="VARCHAR" property="position" />
+	    <result column="IsUrgent" jdbcType="INTEGER" property="isurgent" />
+	    <result column="Num" jdbcType="INTEGER" property="num" />
+	    <result column="CreationTime" jdbcType="TIMESTAMP" property="creationtime" />
+	    <result column="DoctorID" jdbcType="INTEGER" property="doctorid" />
+	    <result column="CheckOperID" jdbcType="INTEGER" property="checkoperid" />
+	    <result column="ResultOperID" jdbcType="INTEGER" property="resultoperid" />
+	    <result column="CheckTime" jdbcType="TIMESTAMP" property="checktime" />
+	    <result column="Result" jdbcType="VARCHAR" property="result" />
+	    <result column="ResultTime" jdbcType="TIMESTAMP" property="resulttime" />
+	    <result column="State" jdbcType="INTEGER" property="state" />
+	    <result column="CRecord" jdbcType="INTEGER" property="recordtype" />
+     </association>
+     <association property="fmeditem" javaType="com.neuedu.pojo.Fmeditem">
+        <id column="FID" jdbcType="INTEGER" property="id" />
+	    <result column="ItemCode" jdbcType="VARCHAR" property="itemcode" />
+	    <result column="ItemName" jdbcType="VARCHAR" property="itemname" />
+	    <result column="Format" jdbcType="VARCHAR" property="format" />
+	    <result column="Price" jdbcType="DECIMAL" property="price" />
+	    <result column="ExpClassID" jdbcType="INTEGER" property="expclassid" />
+	    <result column="DeptID" jdbcType="INTEGER" property="deptid" />
+	    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+	    <result column="CreationDate" jdbcType="TIMESTAMP" property="creationdate" />
+	    <result column="LastUpdateDate" jdbcType="TIMESTAMP" property="lastupdatedate" />
+	    <result column="FRecord" jdbcType="INTEGER" property="recordtype" />
+	    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+    </association>
+   </resultMap>
+  
+  
+  
+   <select id="getCheckappliesByRegistID" parameterType="java.lang.Integer" resultMap="CheckapplyResultMap">
+    select 
+    CheckApply.ID as CID, MedicalID, RegistID, ItemID, Name, Objective, Position, IsUrgent, Num, CreationTime, 
+    DoctorID, CheckOperID, ResultOperID, CheckTime, Result, ResultTime, State, CheckApply.RecordType as CRecord, 
+    Fmeditem.ID as FID, ItemCode, ItemName, Format, Price, ExpClassID, DeptID, MnemonicCode, CreationDate, 
+    LastUpdateDate, Fmeditem.RecordType as FRecord, DelMark
+    from  CheckApply,Fmeditem
+    where RegistID=#{registID,jdbcType=INTEGER} and State=3 and ItemID=Fmeditem.ID
+   </select>
+   
+   
+   <select id="getCheckappliesByID" parameterType="java.util.List" resultMap="CheckapplyResultMap">
+    select CheckApply.ID, MedicalID, RegistID, ItemID, Name, Objective, Position, IsUrgent, Num, CreationTime, 
+    DoctorID, CheckOperID, ResultOperID, CheckTime, Result, ResultTime, State, CheckApply.RecordType as CRecord,
+    Fmeditem.ID as FID, ItemCode, ItemName, Format, Price, ExpClassID, DeptID, MnemonicCode, CreationDate, 
+    LastUpdateDate, Fmeditem.RecordType as FRecord, DelMark 
+    from  CheckApply,Fmeditem
+    where CheckApply.ID in
+    	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+    	#{item}
+    	</foreach>
+    	and ItemID=Fmeditem.ID
+   </select>
+   
+   <resultMap id="PrescriptionResultMap" type="com.neuedu.pojo.PrescriptionPack">
+    <association property="prescription" javaType="com.neuedu.pojo.Prescription">
+        <id column="PID" jdbcType="INTEGER" property="id" />
+	    <result column="MedicalID" jdbcType="INTEGER" property="medicalid" />
+	    <result column="RegistID" jdbcType="INTEGER" property="registid" />
+	    <result column="UserID" jdbcType="INTEGER" property="userid" />
+	    <result column="PrescriptionName" jdbcType="VARCHAR" property="prescriptionname" />
+	    <result column="PrescriptionTime" jdbcType="TIMESTAMP" property="prescriptiontime" />
+	    <result column="PrescriptionState" jdbcType="INTEGER" property="prescriptionstate" />
+    </association>
+    <association property="prescriptiondetailed" javaType="com.neuedu.pojo.Prescriptiondetailed">
+      	<id column="PDID" jdbcType="INTEGER" property="id" />
+	    <result column="PrescriptionID" jdbcType="INTEGER" property="prescriptionid" />
+	    <result column="DrugsID" jdbcType="INTEGER" property="drugsid" />
+	    <result column="DrugsUsage" jdbcType="VARCHAR" property="drugsusage" />
+	    <result column="Dosage" jdbcType="VARCHAR" property="dosage" />
+	    <result column="Frequency" jdbcType="VARCHAR" property="frequency" />
+	    <result column="Amount" jdbcType="DECIMAL" property="amount" />
+	    <result column="State" jdbcType="INTEGER" property="state" />
+    </association>
+    <association property="drugs" javaType="com.neuedu.pojo.Drugs">
+        <id column="DID" jdbcType="INTEGER" property="id" />
+	    <result column="DrugsCode" jdbcType="CHAR" property="drugscode" />
+	    <result column="DrugsName" jdbcType="VARCHAR" property="drugsname" />
+	    <result column="DrugsFormat" jdbcType="VARCHAR" property="drugsformat" />
+	    <result column="DrugsUnit" jdbcType="VARCHAR" property="drugsunit" />
+	    <result column="Manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+	    <result column="DrugsDosageID" jdbcType="INTEGER" property="drugsdosageid" />
+	    <result column="DrugsTypeID" jdbcType="INTEGER" property="drugstypeid" />
+	    <result column="DrugsPrice" jdbcType="DECIMAL" property="drugsprice" />
+	    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+	    <result column="CreationDate" jdbcType="TIMESTAMP" property="creationdate" />
+	    <result column="LastUpdateDate" jdbcType="TIMESTAMP" property="lastupdatedate" />
+	    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+    </association>
+  </resultMap>
+  
+   <select id="getPrescriptionPacksByRegistID" parameterType="java.lang.Integer" resultMap="PrescriptionResultMap">
+     select 
+     Prescription.ID as PID, MedicalID, RegistID, UserID, PrescriptionName, PrescriptionTime, PrescriptionState,
+     PrescriptionDetailed.ID as PDID, PrescriptionID, DrugsID, DrugsUsage, Dosage, Frequency, Amount, State,
+     Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+     DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+     from Prescription,PrescriptionDetailed,Drugs
+     where Prescription.RegistID=#{registID,jdbcType=INTEGER} and PrescriptionDetailed.PrescriptionID=Prescription.ID
+     		and PrescriptionDetailed.State=3 and PrescriptionDetailed.DrugsID=Drugs.ID
+     order by PrescriptionTime desc
+   </select>
+   
+   
+   <select id="getPrescriptionPacksByID" parameterType="java.util.List" resultMap="PrescriptionResultMap">
+     select 
+     Prescription.ID as PID, MedicalID, RegistID, UserID, PrescriptionName, PrescriptionTime, PrescriptionState,
+     PrescriptionDetailed.ID as PDID, PrescriptionID, DrugsID, DrugsUsage, Dosage, Frequency, Amount, State,
+     Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+     DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+     from Prescription,PrescriptionDetailed,Drugs
+     where PrescriptionDetailed.ID in
+     	<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+    	#{item}
+    	</foreach> 
+     	and PrescriptionDetailed.PrescriptionID=Prescription.ID
+        and PrescriptionDetailed.DrugsID=Drugs.ID
+     
+   </select>
+   
+    <resultMap id="HerbResultMap" type="com.neuedu.pojo.HerbalPack">
+    <association property="herbalprescription" javaType="com.neuedu.pojo.Herbalprescription">
+        <id column="HID" jdbcType="INTEGER" property="id" />
+	    <result column="MedicalID" jdbcType="INTEGER" property="medicalid" />
+	    <result column="RegistID" jdbcType="INTEGER" property="registid" />
+	    <result column="UserID" jdbcType="INTEGER" property="userid" />
+	    <result column="PrescriptionName" jdbcType="VARCHAR" property="prescriptionname" />
+	    <result column="CreationTime" jdbcType="TIMESTAMP" property="creationtime" />
+	    <result column="PrescriptioType" jdbcType="VARCHAR" property="prescriptiotype" />
+	    <result column="PayNumber" jdbcType="INTEGER" property="paynumber" />
+	    <result column="Frequency" jdbcType="VARCHAR" property="frequency" />
+	    <result column="DrugsUsage" jdbcType="VARCHAR" property="drugsusage" />
+	    <result column="Therapy" jdbcType="VARCHAR" property="therapy" />
+	    <result column="Detailed" jdbcType="VARCHAR" property="detailed" />
+	    <result column="Advice" jdbcType="VARCHAR" property="advice" />
+	    <result column="State" jdbcType="INTEGER" property="state" />
+    </association>
+    <association property="herbaldetailed" javaType="com.neuedu.pojo.Herbaldetailed">
+      	<id column="HDID" jdbcType="INTEGER" property="id" />
+	    <result column="HerbalPresID" jdbcType="INTEGER" property="herbalpresid" />
+	    <result column="HerbalID" jdbcType="INTEGER" property="herbalid" />
+	    <result column="Dosage" jdbcType="VARCHAR" property="dosage" />
+	    <result column="Price" jdbcType="DECIMAL" property="price" />
+	    <result column="Footnote" jdbcType="VARCHAR" property="footnote" />
+    </association>
+    <association property="drugs" javaType="com.neuedu.pojo.Drugs">
+        <id column="DID" jdbcType="INTEGER" property="id" />
+	    <result column="DrugsCode" jdbcType="CHAR" property="drugscode" />
+	    <result column="DrugsName" jdbcType="VARCHAR" property="drugsname" />
+	    <result column="DrugsFormat" jdbcType="VARCHAR" property="drugsformat" />
+	    <result column="DrugsUnit" jdbcType="VARCHAR" property="drugsunit" />
+	    <result column="Manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+	    <result column="DrugsDosageID" jdbcType="INTEGER" property="drugsdosageid" />
+	    <result column="DrugsTypeID" jdbcType="INTEGER" property="drugstypeid" />
+	    <result column="DrugsPrice" jdbcType="DECIMAL" property="drugsprice" />
+	    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+	    <result column="CreationDate" jdbcType="TIMESTAMP" property="creationdate" />
+	    <result column="LastUpdateDate" jdbcType="TIMESTAMP" property="lastupdatedate" />
+	    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+    </association>
+  </resultMap>
+   
+   <select id="getHerbalPacksByRegistID" parameterType="java.lang.Integer" resultMap="HerbResultMap">
+    select 
+    HerbalPrescription.ID as HID, MedicalID, RegistID, UserID, PrescriptionName, CreationTime, PrescriptioType, 
+    PayNumber, Frequency, DrugsUsage, Therapy, Detailed, Advice, State,
+    HerbalDetailed.ID as HDID, HerbalPresID, HerbalID, Dosage, Price, Footnote,
+    Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+    DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+    from HerbalPrescription,HerbalDetailed,Drugs
+    where RegistID=#{registID,jdbcType=INTEGER} and  State=3 and HerbalPrescription.ID=HerbalPresID and HerbalID=Drugs.ID
+    order by CreationTime desc
+   </select>
+   
+   <select id="getHerbalPacksByID" parameterType="java.util.List" resultMap="HerbResultMap">
+    select 
+    HerbalPrescription.ID as HID, MedicalID, RegistID, UserID, PrescriptionName, CreationTime, PrescriptioType, 
+    PayNumber, Frequency, DrugsUsage, Therapy, Detailed, Advice, State,
+    HerbalDetailed.ID as HDID, HerbalPresID, HerbalID, Dosage, Price, Footnote,
+    Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+    DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+    from HerbalPrescription,HerbalDetailed,Drugs
+    where HerbalPrescription.ID in
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+    	#{item}
+    </foreach>
+    and HerbalPrescription.ID=HerbalPresID and HerbalID=Drugs.ID
+    
+   </select>
+   
+</mapper>

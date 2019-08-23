@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.RegisterMapper">
+  <resultMap id="BaseResultMap" type="com.neuedu.pojo.Register">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CaseNumber" jdbcType="VARCHAR" property="casenumber" />
+    <result column="RealName" jdbcType="VARCHAR" property="realname" />
+    <result column="Gender" jdbcType="INTEGER" property="gender" />
+    <result column="IDnumber" jdbcType="VARCHAR" property="idnumber" />
+    <result column="BirthDate" jdbcType="DATE" property="birthdate" />
+    <result column="Age" jdbcType="INTEGER" property="age" />
+    <result column="AgeType" jdbcType="CHAR" property="agetype" />
+    <result column="HomeAddress" jdbcType="VARCHAR" property="homeaddress" />
+    <result column="VisitDate" jdbcType="DATE" property="visitdate" />
+    <result column="Noon" jdbcType="CHAR" property="noon" />
+    <result column="DeptID" jdbcType="INTEGER" property="deptid" />
+    <result column="UserID" jdbcType="INTEGER" property="userid" />
+    <result column="RegistLeID" jdbcType="INTEGER" property="registleid" />
+    <result column="SettleID" jdbcType="INTEGER" property="settleid" />
+    <result column="IsBook" jdbcType="CHAR" property="isbook" />
+    <result column="RegistTime" jdbcType="TIMESTAMP" property="registtime" />
+    <result column="RegisterID" jdbcType="INTEGER" property="registerid" />
+    <result column="VisitState" jdbcType="INTEGER" property="visitstate" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, CaseNumber, RealName, Gender, IDnumber, BirthDate, Age, AgeType, HomeAddress, 
+    VisitDate, Noon, DeptID, UserID, RegistLeID, SettleID, IsBook, RegistTime, RegisterID, 
+    VisitState
+  </sql>
+  <select id="selectByExample" parameterType="com.neuedu.pojo.RegisterExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from Register
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Register
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Register
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neuedu.pojo.RegisterExample">
+    delete from Register
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.pojo.Register">
+    insert into Register (ID, CaseNumber, RealName, 
+      Gender, IDnumber, BirthDate, 
+      Age, AgeType, HomeAddress, 
+      VisitDate, Noon, DeptID, 
+      UserID, RegistLeID, SettleID, 
+      IsBook, RegistTime, RegisterID, 
+      VisitState)
+    values (#{id,jdbcType=INTEGER}, #{casenumber,jdbcType=VARCHAR}, #{realname,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=INTEGER}, #{idnumber,jdbcType=VARCHAR}, #{birthdate,jdbcType=DATE}, 
+      #{age,jdbcType=INTEGER}, #{agetype,jdbcType=CHAR}, #{homeaddress,jdbcType=VARCHAR}, 
+      #{visitdate,jdbcType=DATE}, #{noon,jdbcType=CHAR}, #{deptid,jdbcType=INTEGER}, 
+      #{userid,jdbcType=INTEGER}, #{registleid,jdbcType=INTEGER}, #{settleid,jdbcType=INTEGER}, 
+      #{isbook,jdbcType=CHAR}, #{registtime,jdbcType=TIMESTAMP}, #{registerid,jdbcType=INTEGER}, 
+      #{visitstate,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Register" useGeneratedKeys="true" keyProperty="id" keyColumn="ID">
+    insert into Register
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="casenumber != null">
+        CaseNumber,
+      </if>
+      <if test="realname != null">
+        RealName,
+      </if>
+      <if test="gender != null">
+        Gender,
+      </if>
+      <if test="idnumber != null">
+        IDnumber,
+      </if>
+      <if test="birthdate != null">
+        BirthDate,
+      </if>
+      <if test="age != null">
+        Age,
+      </if>
+      <if test="agetype != null">
+        AgeType,
+      </if>
+      <if test="homeaddress != null">
+        HomeAddress,
+      </if>
+      <if test="visitdate != null">
+        VisitDate,
+      </if>
+      <if test="noon != null">
+        Noon,
+      </if>
+      <if test="deptid != null">
+        DeptID,
+      </if>
+      <if test="userid != null">
+        UserID,
+      </if>
+      <if test="registleid != null">
+        RegistLeID,
+      </if>
+      <if test="settleid != null">
+        SettleID,
+      </if>
+      <if test="isbook != null">
+        IsBook,
+      </if>
+      <if test="registtime != null">
+        RegistTime,
+      </if>
+      <if test="registerid != null">
+        RegisterID,
+      </if>
+      <if test="visitstate != null">
+        VisitState,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="casenumber != null">
+        #{casenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="idnumber != null">
+        #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdate != null">
+        #{birthdate,jdbcType=DATE},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="agetype != null">
+        #{agetype,jdbcType=CHAR},
+      </if>
+      <if test="homeaddress != null">
+        #{homeaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="visitdate != null">
+        #{visitdate,jdbcType=DATE},
+      </if>
+      <if test="noon != null">
+        #{noon,jdbcType=CHAR},
+      </if>
+      <if test="deptid != null">
+        #{deptid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="registleid != null">
+        #{registleid,jdbcType=INTEGER},
+      </if>
+      <if test="settleid != null">
+        #{settleid,jdbcType=INTEGER},
+      </if>
+      <if test="isbook != null">
+        #{isbook,jdbcType=CHAR},
+      </if>
+      <if test="registtime != null">
+        #{registtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerid != null">
+        #{registerid,jdbcType=INTEGER},
+      </if>
+      <if test="visitstate != null">
+        #{visitstate,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neuedu.pojo.RegisterExample" resultType="java.lang.Long">
+    select count(*) from Register
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update Register
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.casenumber != null">
+        CaseNumber = #{record.casenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.realname != null">
+        RealName = #{record.realname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        Gender = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.idnumber != null">
+        IDnumber = #{record.idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthdate != null">
+        BirthDate = #{record.birthdate,jdbcType=DATE},
+      </if>
+      <if test="record.age != null">
+        Age = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.agetype != null">
+        AgeType = #{record.agetype,jdbcType=CHAR},
+      </if>
+      <if test="record.homeaddress != null">
+        HomeAddress = #{record.homeaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.visitdate != null">
+        VisitDate = #{record.visitdate,jdbcType=DATE},
+      </if>
+      <if test="record.noon != null">
+        Noon = #{record.noon,jdbcType=CHAR},
+      </if>
+      <if test="record.deptid != null">
+        DeptID = #{record.deptid,jdbcType=INTEGER},
+      </if>
+      <if test="record.userid != null">
+        UserID = #{record.userid,jdbcType=INTEGER},
+      </if>
+      <if test="record.registleid != null">
+        RegistLeID = #{record.registleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.settleid != null">
+        SettleID = #{record.settleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.isbook != null">
+        IsBook = #{record.isbook,jdbcType=CHAR},
+      </if>
+      <if test="record.registtime != null">
+        RegistTime = #{record.registtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.registerid != null">
+        RegisterID = #{record.registerid,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitstate != null">
+        VisitState = #{record.visitstate,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update Register
+    set ID = #{record.id,jdbcType=INTEGER},
+      CaseNumber = #{record.casenumber,jdbcType=VARCHAR},
+      RealName = #{record.realname,jdbcType=VARCHAR},
+      Gender = #{record.gender,jdbcType=INTEGER},
+      IDnumber = #{record.idnumber,jdbcType=VARCHAR},
+      BirthDate = #{record.birthdate,jdbcType=DATE},
+      Age = #{record.age,jdbcType=INTEGER},
+      AgeType = #{record.agetype,jdbcType=CHAR},
+      HomeAddress = #{record.homeaddress,jdbcType=VARCHAR},
+      VisitDate = #{record.visitdate,jdbcType=DATE},
+      Noon = #{record.noon,jdbcType=CHAR},
+      DeptID = #{record.deptid,jdbcType=INTEGER},
+      UserID = #{record.userid,jdbcType=INTEGER},
+      RegistLeID = #{record.registleid,jdbcType=INTEGER},
+      SettleID = #{record.settleid,jdbcType=INTEGER},
+      IsBook = #{record.isbook,jdbcType=CHAR},
+      RegistTime = #{record.registtime,jdbcType=TIMESTAMP},
+      RegisterID = #{record.registerid,jdbcType=INTEGER},
+      VisitState = #{record.visitstate,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.Register">
+    update Register
+    <set>
+      <if test="casenumber != null">
+        CaseNumber = #{casenumber,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null">
+        RealName = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        Gender = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="idnumber != null">
+        IDnumber = #{idnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="birthdate != null">
+        BirthDate = #{birthdate,jdbcType=DATE},
+      </if>
+      <if test="age != null">
+        Age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="agetype != null">
+        AgeType = #{agetype,jdbcType=CHAR},
+      </if>
+      <if test="homeaddress != null">
+        HomeAddress = #{homeaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="visitdate != null">
+        VisitDate = #{visitdate,jdbcType=DATE},
+      </if>
+      <if test="noon != null">
+        Noon = #{noon,jdbcType=CHAR},
+      </if>
+      <if test="deptid != null">
+        DeptID = #{deptid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null">
+        UserID = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="registleid != null">
+        RegistLeID = #{registleid,jdbcType=INTEGER},
+      </if>
+      <if test="settleid != null">
+        SettleID = #{settleid,jdbcType=INTEGER},
+      </if>
+      <if test="isbook != null">
+        IsBook = #{isbook,jdbcType=CHAR},
+      </if>
+      <if test="registtime != null">
+        RegistTime = #{registtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="registerid != null">
+        RegisterID = #{registerid,jdbcType=INTEGER},
+      </if>
+      <if test="visitstate != null">
+        VisitState = #{visitstate,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.pojo.Register">
+    update Register
+    set CaseNumber = #{casenumber,jdbcType=VARCHAR},
+      RealName = #{realname,jdbcType=VARCHAR},
+      Gender = #{gender,jdbcType=INTEGER},
+      IDnumber = #{idnumber,jdbcType=VARCHAR},
+      BirthDate = #{birthdate,jdbcType=DATE},
+      Age = #{age,jdbcType=INTEGER},
+      AgeType = #{agetype,jdbcType=CHAR},
+      HomeAddress = #{homeaddress,jdbcType=VARCHAR},
+      VisitDate = #{visitdate,jdbcType=DATE},
+      Noon = #{noon,jdbcType=CHAR},
+      DeptID = #{deptid,jdbcType=INTEGER},
+      UserID = #{userid,jdbcType=INTEGER},
+      RegistLeID = #{registleid,jdbcType=INTEGER},
+      SettleID = #{settleid,jdbcType=INTEGER},
+      IsBook = #{isbook,jdbcType=CHAR},
+      RegistTime = #{registtime,jdbcType=TIMESTAMP},
+      RegisterID = #{registerid,jdbcType=INTEGER},
+      VisitState = #{visitstate,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

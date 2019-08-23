@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.DiseaseMapper">
+  <resultMap id="BaseResultMap" type="com.neuedu.pojo.Disease">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="DiseaseCode" jdbcType="VARCHAR" property="diseasecode" />
+    <result column="DiseaseName" jdbcType="VARCHAR" property="diseasename" />
+    <result column="DiseaseICD" jdbcType="VARCHAR" property="diseaseicd" />
+    <result column="DiseCategoryID" jdbcType="INTEGER" property="disecategoryid" />
+    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, DiseaseCode, DiseaseName, DiseaseICD, DiseCategoryID, DelMark
+  </sql>
+  <select id="selectByExample" parameterType="com.neuedu.pojo.DiseaseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from Disease
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from Disease
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from Disease
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neuedu.pojo.DiseaseExample">
+    delete from Disease
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.pojo.Disease">
+    insert into Disease (ID, DiseaseCode, DiseaseName, 
+      DiseaseICD, DiseCategoryID, DelMark
+      )
+    values (#{id,jdbcType=INTEGER}, #{diseasecode,jdbcType=VARCHAR}, #{diseasename,jdbcType=VARCHAR}, 
+      #{diseaseicd,jdbcType=VARCHAR}, #{disecategoryid,jdbcType=INTEGER}, #{delmark,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Disease">
+    insert into Disease
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="diseasecode != null">
+        DiseaseCode,
+      </if>
+      <if test="diseasename != null">
+        DiseaseName,
+      </if>
+      <if test="diseaseicd != null">
+        DiseaseICD,
+      </if>
+      <if test="disecategoryid != null">
+        DiseCategoryID,
+      </if>
+      <if test="delmark != null">
+        DelMark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="diseasecode != null">
+        #{diseasecode,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasename != null">
+        #{diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseicd != null">
+        #{diseaseicd,jdbcType=VARCHAR},
+      </if>
+      <if test="disecategoryid != null">
+        #{disecategoryid,jdbcType=INTEGER},
+      </if>
+      <if test="delmark != null">
+        #{delmark,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neuedu.pojo.DiseaseExample" resultType="java.lang.Long">
+    select count(*) from Disease
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update Disease
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.diseasecode != null">
+        DiseaseCode = #{record.diseasecode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diseasename != null">
+        DiseaseName = #{record.diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.diseaseicd != null">
+        DiseaseICD = #{record.diseaseicd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.disecategoryid != null">
+        DiseCategoryID = #{record.disecategoryid,jdbcType=INTEGER},
+      </if>
+      <if test="record.delmark != null">
+        DelMark = #{record.delmark,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update Disease
+    set ID = #{record.id,jdbcType=INTEGER},
+      DiseaseCode = #{record.diseasecode,jdbcType=VARCHAR},
+      DiseaseName = #{record.diseasename,jdbcType=VARCHAR},
+      DiseaseICD = #{record.diseaseicd,jdbcType=VARCHAR},
+      DiseCategoryID = #{record.disecategoryid,jdbcType=INTEGER},
+      DelMark = #{record.delmark,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.Disease">
+    update Disease
+    <set>
+      <if test="diseasecode != null">
+        DiseaseCode = #{diseasecode,jdbcType=VARCHAR},
+      </if>
+      <if test="diseasename != null">
+        DiseaseName = #{diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="diseaseicd != null">
+        DiseaseICD = #{diseaseicd,jdbcType=VARCHAR},
+      </if>
+      <if test="disecategoryid != null">
+        DiseCategoryID = #{disecategoryid,jdbcType=INTEGER},
+      </if>
+      <if test="delmark != null">
+        DelMark = #{delmark,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.pojo.Disease">
+    update Disease
+    set DiseaseCode = #{diseasecode,jdbcType=VARCHAR},
+      DiseaseName = #{diseasename,jdbcType=VARCHAR},
+      DiseaseICD = #{diseaseicd,jdbcType=VARCHAR},
+      DiseCategoryID = #{disecategoryid,jdbcType=INTEGER},
+      DelMark = #{delmark,jdbcType=INTEGER}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

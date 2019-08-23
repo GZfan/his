@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.neuedu.mapper.CheckrelationMapper">
+  <resultMap id="BaseResultMap" type="com.neuedu.pojo.Checkrelation">
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="CheckProjID" jdbcType="INTEGER" property="checkprojid" />
+    <result column="CheckTempID" jdbcType="INTEGER" property="checktempid" />
+    <result column="Position" jdbcType="VARCHAR" property="position" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ID, CheckProjID, CheckTempID, Position
+  </sql>
+  <select id="selectByExample" parameterType="com.neuedu.pojo.CheckrelationExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from CheckRelation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CheckRelation
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from CheckRelation
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.neuedu.pojo.CheckrelationExample">
+    delete from CheckRelation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.neuedu.pojo.Checkrelation">
+    insert into CheckRelation (ID, CheckProjID, CheckTempID, 
+      Position)
+    values (#{id,jdbcType=INTEGER}, #{checkprojid,jdbcType=INTEGER}, #{checktempid,jdbcType=INTEGER}, 
+      #{position,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Checkrelation">
+    insert into CheckRelation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="checkprojid != null">
+        CheckProjID,
+      </if>
+      <if test="checktempid != null">
+        CheckTempID,
+      </if>
+      <if test="position != null">
+        Position,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="checkprojid != null">
+        #{checkprojid,jdbcType=INTEGER},
+      </if>
+      <if test="checktempid != null">
+        #{checktempid,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.neuedu.pojo.CheckrelationExample" resultType="java.lang.Long">
+    select count(*) from CheckRelation
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update CheckRelation
+    <set>
+      <if test="record.id != null">
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkprojid != null">
+        CheckProjID = #{record.checkprojid,jdbcType=INTEGER},
+      </if>
+      <if test="record.checktempid != null">
+        CheckTempID = #{record.checktempid,jdbcType=INTEGER},
+      </if>
+      <if test="record.position != null">
+        Position = #{record.position,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update CheckRelation
+    set ID = #{record.id,jdbcType=INTEGER},
+      CheckProjID = #{record.checkprojid,jdbcType=INTEGER},
+      CheckTempID = #{record.checktempid,jdbcType=INTEGER},
+      Position = #{record.position,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.neuedu.pojo.Checkrelation">
+    update CheckRelation
+    <set>
+      <if test="checkprojid != null">
+        CheckProjID = #{checkprojid,jdbcType=INTEGER},
+      </if>
+      <if test="checktempid != null">
+        CheckTempID = #{checktempid,jdbcType=INTEGER},
+      </if>
+      <if test="position != null">
+        Position = #{position,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.neuedu.pojo.Checkrelation">
+    update CheckRelation
+    set CheckProjID = #{checkprojid,jdbcType=INTEGER},
+      CheckTempID = #{checktempid,jdbcType=INTEGER},
+      Position = #{position,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
