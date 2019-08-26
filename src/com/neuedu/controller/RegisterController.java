@@ -3,6 +3,9 @@ package com.neuedu.controller;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +16,7 @@ import com.neuedu.pojo.ChargeList;
 import com.neuedu.pojo.Invoice;
 import com.neuedu.pojo.Register;
 import com.neuedu.pojo.UnchargeItems;
+import com.neuedu.pojo.User;
 import com.neuedu.service.RegisterService;
 import com.neuedu.util.ResultDTO;
 
@@ -34,8 +38,10 @@ public class RegisterController {
 	@RequestMapping("add")
 	public @ResponseBody ResultDTO<Register> addRegister(@RequestBody Register register) {
 		ResultDTO<Register> resultDTO=new ResultDTO<Register>();
-		try {
-			registerService.addRegister(register);
+		try {  
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			registerService.addRegister(register,user);
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("挂号成功！");
 		} catch (Exception e) {
@@ -118,7 +124,9 @@ public class RegisterController {
 	public @ResponseBody ResultDTO<Register> charge(@RequestBody ChargeList list){
 		ResultDTO<Register> resultDTO=new ResultDTO<Register>();
 		try {
-			registerService.charge(list);
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			registerService.charge(list,user);
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("收费成功！");
 		} catch (Exception e) {
@@ -133,7 +141,9 @@ public class RegisterController {
 	public @ResponseBody ResultDTO<Register> withdraw(int id){
 		ResultDTO<Register> resultDTO=new ResultDTO<Register>();
 		try {
-			registerService.withdraw(id);
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			registerService.withdraw(id,user);
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("退号成功！");
 		} catch (Exception e) {
@@ -164,7 +174,9 @@ public class RegisterController {
 	public @ResponseBody ResultDTO<Register> refund(@RequestBody ChargeList list){
 		ResultDTO<Register> resultDTO=new ResultDTO<Register>();
 		try {
-			registerService.refund(list);
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			registerService.refund(list,user);
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("退费成功！");
 		} catch (Exception e) {
@@ -244,7 +256,9 @@ public class RegisterController {
 	public @ResponseBody ResultDTO<Date> getStartTime(){
 		ResultDTO<Date> resultDTO=new ResultDTO<Date>();
 		try {
-			
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			resultDTO.setData(registerService.getDailySettleAccountStartTime(user));
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("获取成功！");
 		} catch (Exception e) {
@@ -256,6 +270,7 @@ public class RegisterController {
 	}
 	
 	public @ResponseBody ResultDTO<Register> dailySettleAccounts(){
-		
+		ResultDTO<Register> resultDTO=new ResultDTO<>();
+		return resultDTO;
 	}
 }

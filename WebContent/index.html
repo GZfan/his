@@ -37,7 +37,7 @@
 				<li class="dropDown dropDown_hover">
 					<a href="#" class="dropDown_A">admin <i class="Hui-iconfont">&#xe6d5;</i></a>
 					<ul class="dropDown-menu menu radius box-shadow">						
-						<li><a href="#">退出</a></li>
+						<li><a id="logout">退出</a></li>
 					</ul>
 				</li>				
 			</ul>
@@ -52,7 +52,7 @@
 			<dd>
 				<ul>
 					<li><a data-href="member-add.html" data-title="现场挂号" href="javascript:void(0)">现场挂号</a></li>
-					<li><a data-href="article-list.html" data-title="退号" href="javascript:void(0)">退号</a></li>
+					<li ><a id="test1" data-href="article-list.html" data-title="退号" href="javascript:void(0)">退号</a></li>
 					<li><a data-href="article-list.html" data-title="收费" href="javascript:void(0)">收费</a></li>
 					<li><a data-href="article-list.html" data-title="退费" href="javascript:void(0)">退费</a></li>
 					<li><a data-href="article-list.html" data-title="发票补打" href="javascript:void(0)">发票补打</a></li>
@@ -160,6 +160,21 @@
 <script type="text/javascript" src="lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 <script type="text/javascript">
 $(function(){
+	$("#logout").click(function(){	
+		$.ajax({
+			type: "get",  //数据提交方式（post/get）
+			url: "logout",  //提交到的url
+			success: function(data){
+				window.location.href='login.html'
+			}
+		});
+ 	});
+	var obj=document.getElementById("test1");
+	obj.style.backgroundColor= "transparent";
+	obj.style.cursor= "no-drop";
+	obj.style.color= "#999";
+	obj.style.text_decoration= "none";
+	obj.setAttribute("data-href","")
 	
 });
 </script> 

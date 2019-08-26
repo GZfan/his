@@ -57,13 +57,13 @@ public class UnchargeTest extends BaseTest {
 		herbal.add(2);
 		chargeList.setHerbal(herbal);
 		chargeList.setPrescription(herbal);
-		registerservice.charge(chargeList);
+		//registerservice.charge(chargeList);
 		return ;
 	}
 	
 	//@Test
 	public void withdrawTest() {
-		registerservice.withdraw(45);
+		//registerservice.withdraw(45);
 		return;
 	}
 	@Test
@@ -84,7 +84,7 @@ public class UnchargeTest extends BaseTest {
 		herbal.add(2);
 		chargeList.setHerbal(herbal);
 		chargeList.setPrescription(herbal);
-		registerservice.refund(chargeList);
+		//registerservice.refund(chargeList);
 		return ;
 	}
 	//@Test

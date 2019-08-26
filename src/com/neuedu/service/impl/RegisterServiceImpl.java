@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+
 import org.springframework.stereotype.Service;
 
 import com.neuedu.mapper.ChargedMapper;
@@ -20,6 +20,7 @@ import com.neuedu.mapper.PatientcostsMapper;
 import com.neuedu.mapper.PrescriptiondetailedMapper;
 import com.neuedu.mapper.RegisterMapper;
 import com.neuedu.mapper.RegistlevelMapper;
+import com.neuedu.mapper.RegistworkMapper;
 import com.neuedu.mapper.UnchargeMapper;
 import com.neuedu.pojo.ChargeList;
 import com.neuedu.pojo.CheckPack;
@@ -39,7 +40,11 @@ import com.neuedu.pojo.Register;
 import com.neuedu.pojo.RegisterExample;
 import com.neuedu.pojo.RegisterExample.Criteria;
 import com.neuedu.pojo.Registlevel;
+import com.neuedu.pojo.Registwork;
+import com.neuedu.pojo.RegistworkExample;
+import com.neuedu.pojo.RegistworkExample.Criterion;
 import com.neuedu.pojo.UnchargeItems;
+import com.neuedu.pojo.User;
 import com.neuedu.service.RegisterService;
 import com.neuedu.util.GetDate;
 
@@ -77,8 +82,12 @@ public class RegisterServiceImpl implements RegisterService{
 	@Autowired
 	HerbalprescriptionMapper herbalprescriptionMapper;
 	
+	@Autowired
+	RegistworkMapper registworkMapper;
+	
 	@Override
-	public void addRegister(Register register) {
+	public void addRegister(Register register,User user) {
+		register.setRegisterid(user.getId());;
 		registerMapper.insertSelective(register);
 		int registerId=register.getId();
 		Patientcosts cost=new Patientcosts(); 
@@ -157,7 +166,7 @@ public class RegisterServiceImpl implements RegisterService{
 		return unchargeItems;
 	}
 	@Override
-	public void charge(ChargeList items) {
+	public void charge(ChargeList items,User user) {
 		
 		List<Integer> checkapplys=items.getCheckapply();
 		List<Integer> herbal=items.getHerbal();
@@ -167,7 +176,7 @@ public class RegisterServiceImpl implements RegisterService{
 		List<PrescriptionPack> prescriptiondetaileds=null;
 		float price=0;
 		Date now=GetDate.getCurrDate();
-		int userID=1;
+		int userID=user.getId();
 		//更改状态,把要交费的有关项目查询出来
 		if(checkapplys.size()!=0) {
 			Checkapply checkapply=new Checkapply();
@@ -289,9 +298,9 @@ public class RegisterServiceImpl implements RegisterService{
 		}
 	}
 	@Override
-	public void withdraw(int id) {
+	public void withdraw(int id,User user) {
 		Date nowDate=GetDate.getCurrDate();
-		int userid=0;
+		int userid=user.getId();
 		
 		//修改挂号表信息
 		Register register=new Register();
@@ -356,7 +365,7 @@ public class RegisterServiceImpl implements RegisterService{
 	}
 
 	@Override
-	public void refund(ChargeList items) {
+	public void refund(ChargeList items,User user) {
 		List<Integer> checkapplys=items.getCheckapply();
 		List<Integer> herbal=items.getHerbal();
 		List<Integer> prescription=items.getPrescription();
@@ -365,7 +374,7 @@ public class RegisterServiceImpl implements RegisterService{
 		List<PrescriptionPack> prescriptiondetaileds=null;
 		Date now=GetDate.getCurrDate();
 		float price=0;
-		int userID=1;
+		int userID=user.getId();
 		//更改状态,把要退费的有关项目查询出来
 		if(checkapplys.size()!=0) {
 			Checkapply checkapply=new Checkapply();
@@ -565,6 +574,17 @@ public class RegisterServiceImpl implements RegisterService{
 		oldInvoice.setBack(neg.getInvoicenum());
 		oldInvoice.setState(2);
 		invoiceMapper.updateByPrimaryKeySelective(oldInvoice);
+	}
+
+	
+	@Override
+	public Date getDailySettleAccountStartTime(User user) {
+		RegistworkExample registworkExample=new RegistworkExample();
+		com.neuedu.pojo.RegistworkExample.Criteria criteria=registworkExample.createCriteria();
+		criteria.andRegisteridEqualTo(user.getId());
+		registworkExample.setOrderByClause("ID DESC");
+		List<Registwork> list=registworkMapper.selectByExample(registworkExample);
+		return list.get(0).getEndtime();
 	}
 	
 	
