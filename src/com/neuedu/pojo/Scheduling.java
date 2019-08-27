@@ -2,9 +2,15 @@ package com.neuedu.pojo;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class Scheduling {
     private Integer id;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone="GMT+8")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private Date scheddate;
 
     private Integer deptid;

@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.neuedu.pojo.ChargeList;
+import com.neuedu.pojo.DailySettleAccounts;
 import com.neuedu.pojo.Invoice;
+import com.neuedu.pojo.InvoiceDetail;
+import com.neuedu.pojo.Patientcosts;
+import com.neuedu.pojo.PatientcostsSearchRequire;
 import com.neuedu.pojo.Register;
 import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
@@ -268,9 +272,91 @@ public class RegisterController {
 		}
 		return resultDTO;
 	}
+	//获得日结单信息
+	@RequestMapping("getdailysettleaccounts")
+	public @ResponseBody ResultDTO<DailySettleAccounts> getdailySettleAccounts(@RequestBody DailySettleAccounts dailySettleAccounts){
+		ResultDTO<DailySettleAccounts> resultDTO=new ResultDTO<>();
+		try {
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			resultDTO.setData(registerService.getDailySettleAccounts(dailySettleAccounts, user));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+		}
+		return resultDTO;
+	}
+	//进行日结
+	@RequestMapping("dailysettleaccounts")
+	public @ResponseBody ResultDTO<DailySettleAccounts> makedailySettleAccounts(@RequestBody DailySettleAccounts dailySettleAccounts){
+		ResultDTO<DailySettleAccounts> resultDTO=new ResultDTO<>();
+		try {
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			registerService.makeDailySettleAccounts(dailySettleAccounts, user);
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("日结成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("日结失败！");
+		}
+		return resultDTO;
+	}
 	
-	public @ResponseBody ResultDTO<Register> dailySettleAccounts(){
-		ResultDTO<Register> resultDTO=new ResultDTO<>();
+	//获得历史日结单信息
+	@RequestMapping("searchdailysettleaccounts")
+	public @ResponseBody ResultDTO<List<DailySettleAccounts>> searchdailySettleAccounts(@RequestBody DailySettleAccounts dailySettleAccounts){
+		ResultDTO<List<DailySettleAccounts>> resultDTO=new ResultDTO<>();
+		try {
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			resultDTO.setData(registerService.searchdailySettleAccounts(dailySettleAccounts, user));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+		}
+		return resultDTO;
+	}
+	
+	//获得历史日结单信息
+	@RequestMapping("getinvoicedetail")
+	public @ResponseBody ResultDTO<List<InvoiceDetail>> getInvoiceDetail(@RequestBody DailySettleAccounts dailySettleAccounts){
+		ResultDTO<List<InvoiceDetail>> resultDTO=new ResultDTO<>();
+		try {
+			Session session = SecurityUtils.getSubject().getSession(); 
+			User user=(User)session.getAttribute("user");
+			resultDTO.setData(registerService.getInvoiceDetail(dailySettleAccounts, user));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+		}
+		return resultDTO;
+	}
+	
+	//获取相应病历号的费用
+	@RequestMapping("getpatientcosts")
+	public @ResponseBody ResultDTO<List<Patientcosts>> getPatientcosts(@RequestBody PatientcostsSearchRequire patientcostsSearchRequire){
+		ResultDTO<List<Patientcosts>> resultDTO=new ResultDTO<>();
+		try {
+			resultDTO.setData(registerService.getPatientcosts(patientcostsSearchRequire));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+			
+		} 
 		return resultDTO;
 	}
 }

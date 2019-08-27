@@ -3,11 +3,19 @@ package com.neuedu.service;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.neuedu.pojo.ChargeList;
+import com.neuedu.pojo.DailySettleAccounts;
 import com.neuedu.pojo.Invoice;
+import com.neuedu.pojo.InvoiceDetail;
+import com.neuedu.pojo.Patientcosts;
+import com.neuedu.pojo.PatientcostsSearchRequire;
 import com.neuedu.pojo.Register;
 import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
+import com.neuedu.util.ResultDTO;
 
 
 
@@ -38,4 +46,14 @@ public interface RegisterService {
 	public void printInvoiceAgain(int id);
 	
 	public Date getDailySettleAccountStartTime(User user);
+	
+	public DailySettleAccounts getDailySettleAccounts(DailySettleAccounts dailySettleAccounts,User user);
+	
+	public void makeDailySettleAccounts(DailySettleAccounts dailySettleAccounts,User user);
+	
+	public List<DailySettleAccounts> searchdailySettleAccounts(DailySettleAccounts dailySettleAccounts,User user);
+	
+	public List<InvoiceDetail> getInvoiceDetail(DailySettleAccounts dailySettleAccounts,User user);
+	
+	public List<Patientcosts> getPatientcosts(PatientcostsSearchRequire patientcostsSearchRequire);
 }

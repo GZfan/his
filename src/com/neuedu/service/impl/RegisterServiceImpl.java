@@ -3,6 +3,7 @@ package com.neuedu.service.impl;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -26,13 +27,16 @@ import com.neuedu.pojo.ChargeList;
 import com.neuedu.pojo.CheckPack;
 import com.neuedu.pojo.Checkapply;
 import com.neuedu.pojo.CheckapplyExample;
+import com.neuedu.pojo.DailySettleAccounts;
 import com.neuedu.pojo.HerbalPack;
 import com.neuedu.pojo.Herbalprescription;
 import com.neuedu.pojo.HerbalprescriptionExample;
 import com.neuedu.pojo.Invoice;
+import com.neuedu.pojo.InvoiceDetail;
 import com.neuedu.pojo.InvoiceExample;
 import com.neuedu.pojo.Patientcosts;
 import com.neuedu.pojo.PatientcostsExample;
+import com.neuedu.pojo.PatientcostsSearchRequire;
 import com.neuedu.pojo.PrescriptionPack;
 import com.neuedu.pojo.Prescriptiondetailed;
 import com.neuedu.pojo.PrescriptiondetailedExample;
@@ -585,6 +589,113 @@ public class RegisterServiceImpl implements RegisterService{
 		registworkExample.setOrderByClause("ID DESC");
 		List<Registwork> list=registworkMapper.selectByExample(registworkExample);
 		return list.get(0).getEndtime();
+	}
+
+	@Override
+	public DailySettleAccounts getDailySettleAccounts(DailySettleAccounts dailySettleAccounts, User user) {
+		dailySettleAccounts.setRealname(user.getRealname());
+		InvoiceExample invoiceExample=new InvoiceExample();
+		com.neuedu.pojo.InvoiceExample.Criteria criteria=invoiceExample.createCriteria();
+		criteria.andCreationtimeBetween(dailySettleAccounts.getStarttime(), dailySettleAccounts.getEndtime());
+		criteria.andUseridEqualTo(user.getId());
+		List<Invoice> list=invoiceMapper.selectByExample(invoiceExample);
+		int nums=0;
+		double money=0;
+		for(Invoice invoice:list) {
+			nums++;
+			money+=invoice.getMoney().doubleValue();
+		}
+		dailySettleAccounts.setInvoicenumber(nums);
+		dailySettleAccounts.setTotalmoney(money);
+		return dailySettleAccounts;
+	}
+
+	@Override
+	public void makeDailySettleAccounts(DailySettleAccounts dailySettleAccounts,User user) {
+		Invoice invoice =new Invoice();
+		invoice.setDailystate(1);
+		InvoiceExample invoiceExample=new InvoiceExample();
+		com.neuedu.pojo.InvoiceExample.Criteria criteria=invoiceExample.createCriteria();
+		criteria.andCreationtimeBetween(dailySettleAccounts.getStarttime(), dailySettleAccounts.getEndtime());
+		criteria.andUseridEqualTo(user.getId());
+		invoiceMapper.updateByExampleSelective(invoice, invoiceExample);
+	}
+
+	@Override
+	public List<DailySettleAccounts> searchdailySettleAccounts(DailySettleAccounts dailySettleAccounts, User user) {
+		RegistworkExample registworkExample=new RegistworkExample();
+		com.neuedu.pojo.RegistworkExample.Criteria criteria=registworkExample.createCriteria();
+		criteria.andStarttimeGreaterThanOrEqualTo(dailySettleAccounts.getStarttime());
+		criteria.andEndtimeLessThanOrEqualTo(dailySettleAccounts.getEndtime());
+		if(user.getUsetype()==2) {
+			criteria.andRegisteridEqualTo(user.getId());
+		}
+		List<Registwork> registworkslist=registworkMapper.selectByExample(registworkExample);
+		ArrayList<DailySettleAccounts> dailySettleAccountslist=new ArrayList<DailySettleAccounts>();
+		for(Registwork registwork:registworkslist) {
+			DailySettleAccounts item=new DailySettleAccounts();
+			item.setStarttime(registwork.getStarttime());
+			item.setEndtime(registwork.getEndtime());
+			item.setRealname(user.getRealname());
+			InvoiceExample invoiceExample=new InvoiceExample();
+			com.neuedu.pojo.InvoiceExample.Criteria invoicecriteria=invoiceExample.createCriteria();
+			invoicecriteria.andCreationtimeBetween(registwork.getStarttime(), registwork.getEndtime());
+			if(user.getUsetype()==2) {
+				invoicecriteria.andUseridEqualTo(user.getId());
+			}
+			List<Invoice> list=invoiceMapper.selectByExample(invoiceExample);
+			int nums=0;
+			double money=0;
+			for(Invoice invoice:list) {
+				nums++;
+				money+=invoice.getMoney().doubleValue();
+			}
+			item.setInvoicenumber(nums);
+			item.setTotalmoney(money);
+			dailySettleAccountslist.add(item);
+		}
+		return dailySettleAccountslist;
+	}
+
+
+	@Override
+	public List<InvoiceDetail> getInvoiceDetail(DailySettleAccounts dailySettleAccounts, User user) {
+		InvoiceExample invoiceExample=new InvoiceExample();
+		com.neuedu.pojo.InvoiceExample.Criteria criteria=invoiceExample.createCriteria();
+		criteria.andCreationtimeBetween(dailySettleAccounts.getStarttime(), dailySettleAccounts.getEndtime());
+		if(user.getUsetype()==2) {
+			criteria.andUseridEqualTo(user.getId());
+		}
+		List<Invoice> list=invoiceMapper.selectByExample(invoiceExample);
+		ArrayList<InvoiceDetail> invoicelist=new ArrayList<>();
+		for(Invoice invoice:list) {
+			InvoiceDetail item=new InvoiceDetail();
+			item.setInvoice(invoice);
+			item.setRealname(registerMapper.selectByPrimaryKey(invoice.getRegistid()).getRealname());
+			PatientcostsExample patientcostsExample=new PatientcostsExample();
+			patientcostsExample.createCriteria().andInvoiceidEqualTo(invoice.getId());
+			item.setItems(paintCostMapper.selectByExample(patientcostsExample));
+			invoicelist.add(item);
+		}
+		return invoicelist;
+	}
+
+	
+	@Override
+	public List<Patientcosts> getPatientcosts(PatientcostsSearchRequire patientcostsSearchRequire) {
+		RegisterExample registerExample=new RegisterExample();
+		registerExample.createCriteria().andCasenumberEqualTo(patientcostsSearchRequire.getCaseNumber());
+		List<Register> registers=registerMapper.selectByExample(registerExample);
+		ArrayList<Integer> idList=new ArrayList<>(registers.size());
+		for(Register register:registers) {
+			idList.add(register.getId());
+		}
+		PatientcostsExample patientcostsExample=new PatientcostsExample();
+		com.neuedu.pojo.PatientcostsExample.Criteria criteria=patientcostsExample.createCriteria();
+		criteria.andCreatetimeBetween(patientcostsSearchRequire.getStartTime(), patientcostsSearchRequire.getEndTime());
+		criteria.andRegistidIn(idList);
+		patientcostsExample.setOrderByClause("PayTime ASC");
+		return paintCostMapper.selectByExample(patientcostsExample);
 	}
 	
 	
