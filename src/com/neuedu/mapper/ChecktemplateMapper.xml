@@ -85,6 +85,22 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  <select id="selectChecktemplates" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    
+      distinct
+
+    CheckTemplate.ID, Name, UserID, CreationTime, Scope, RecordType, CheckTemplate.DelMark
+    from CheckTemplate,User
+    where  RecordType=#{recordType,jdbcType=INTEGER} and (Scope='1' or (Scope='2' and CheckTemplate.UserID = User.ID and User.DeptID=#{userdept,jdbcType=INTEGER})
+    		or (Scope='3' and CheckTemplate.UserID = #{userid,jdbcType=INTEGER}))
+    order by CheckTemplate.ID
+  </select>
+  
+  
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

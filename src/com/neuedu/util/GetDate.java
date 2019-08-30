@@ -17,4 +17,16 @@ public class GetDate {
 		}
 		return now;
 	}
+	
+	public static Date getDay() {
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+		String date = df.format(new Date());
+		Date now =new Date();
+		try {
+		    now =df.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return now;
+	}
 }

@@ -120,7 +120,7 @@
       #{mnemoniccode,jdbcType=VARCHAR}, #{creationdate,jdbcType=TIMESTAMP}, #{lastupdatedate,jdbcType=TIMESTAMP}, 
       #{delmark,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.neuedu.pojo.Drugs">
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Drugs" useGeneratedKeys="true" keyProperty="id">
     insert into Drugs
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

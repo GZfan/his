@@ -1,6 +1,7 @@
 package com.neuedu.mapper;
 
 import com.neuedu.pojo.Prescriptiondetailed;
+import com.neuedu.pojo.PrescriptiondetailedAndDrug;
 import com.neuedu.pojo.PrescriptiondetailedExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,7 @@ public interface PrescriptiondetailedMapper {
     int updateByPrimaryKeySelective(Prescriptiondetailed record);
 
     int updateByPrimaryKey(Prescriptiondetailed record);
+    
+    List<PrescriptiondetailedAndDrug> selectPrescriptiondetailedsByPrescriptionID(@Param("prescriptionID") Integer prescriptionID);
+    
 }

@@ -90,6 +90,49 @@
     from HerbalDetailed
     where ID = #{id,jdbcType=INTEGER}
   </select>
+  
+  <resultMap id="HerbaldetailedsResultMap" type="com.neuedu.pojo.HerbaldetailedAndDrug">
+     <association property="herbaldetailed" javaType="com.neuedu.pojo.Herbaldetailed">
+        <id column="PID" jdbcType="INTEGER" property="id" />
+	    <result column="PrescriptionID" jdbcType="INTEGER" property="prescriptionid" />
+	    <result column="DrugsID" jdbcType="INTEGER" property="drugsid" />
+	    <result column="DrugsUsage" jdbcType="VARCHAR" property="drugsusage" />
+	    <result column="Dosage" jdbcType="VARCHAR" property="dosage" />
+	    <result column="Frequency" jdbcType="VARCHAR" property="frequency" />
+	    <result column="Amount" jdbcType="DECIMAL" property="amount" />
+	    <result column="State" jdbcType="INTEGER" property="state" />
+     </association>
+     <association property="drugs" javaType="com.neuedu.pojo.Drugs">
+        <id column="DID" jdbcType="INTEGER" property="id" />
+	    <result column="DrugsCode" jdbcType="CHAR" property="drugscode" />
+	    <result column="DrugsName" jdbcType="VARCHAR" property="drugsname" />
+	    <result column="DrugsFormat" jdbcType="VARCHAR" property="drugsformat" />
+	    <result column="DrugsUnit" jdbcType="VARCHAR" property="drugsunit" />
+	    <result column="Manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+	    <result column="DrugsDosageID" jdbcType="INTEGER" property="drugsdosageid" />
+	    <result column="DrugsTypeID" jdbcType="INTEGER" property="drugstypeid" />
+	    <result column="DrugsPrice" jdbcType="DECIMAL" property="drugsprice" />
+	    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+	    <result column="CreationDate" jdbcType="TIMESTAMP" property="creationdate" />
+	    <result column="LastUpdateDate" jdbcType="TIMESTAMP" property="lastupdatedate" />
+	    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+    </association>
+   </resultMap>
+  
+  <select id="selectHerbaldetailedsByHerbalPrescriptionID" parameterType="java.lang.Integer" resultMap="HerbaldetailedsResultMap">
+    select distinct
+    HerbalDetailed.ID as PID, HerbalPresID, HerbalID, Dosage, Price, Footnote,
+    Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+    DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+    from HerbalDetailed,Drugs
+    where Drugs.ID=HerbalID and HerbalPresID=#{herbalpresID,jdbcType=INTEGER}
+  </select>
+  
+  
+  
+  
+  
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from HerbalDetailed
     where ID = #{id,jdbcType=INTEGER}

@@ -27,4 +27,6 @@ public interface ChecktemplateMapper {
     int updateByPrimaryKeySelective(Checktemplate record);
 
     int updateByPrimaryKey(Checktemplate record);
+    
+    List<Checktemplate> selectChecktemplates(@Param("userid") Integer userid,@Param("userdept") Integer userdept,@Param("recordType") Integer recordType);
 }

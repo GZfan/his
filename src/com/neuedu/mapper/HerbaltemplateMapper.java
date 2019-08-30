@@ -1,5 +1,6 @@
 package com.neuedu.mapper;
 
+
 import com.neuedu.pojo.Herbaltemplate;
 import com.neuedu.pojo.HerbaltemplateExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface HerbaltemplateMapper {
     int updateByPrimaryKeySelective(Herbaltemplate record);
 
     int updateByPrimaryKey(Herbaltemplate record);
+    
+    List<Herbaltemplate> selectHerbaltemplates(@Param("userid") Integer userid,@Param("userdept") Integer userdept);
 }

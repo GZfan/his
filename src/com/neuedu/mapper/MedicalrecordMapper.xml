@@ -124,7 +124,7 @@
       #{diagnosis,jdbcType=VARCHAR}, #{handling,jdbcType=VARCHAR}, #{casestate,jdbcType=INTEGER}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.neuedu.pojo.Medicalrecord">
+  <insert id="insertSelective" parameterType="com.neuedu.pojo.Medicalrecord" useGeneratedKeys="true" keyProperty="id">
     insert into MedicalRecord
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

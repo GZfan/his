@@ -84,6 +84,44 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  
+  <resultMap id="DrugsDetailedAndDrugResultMap" type="com.neuedu.pojo.DrugsDetailedAndDrug">
+     <association property="drugsdetailed" javaType="com.neuedu.pojo.Drugsdetailed">
+        <id column="DDID" jdbcType="INTEGER" property="id" />
+	    <result column="DrugsTempID" jdbcType="INTEGER" property="drugstempid" />
+	    <result column="DrugsID" jdbcType="INTEGER" property="drugsid" />
+	    <result column="DrugsUsage" jdbcType="VARCHAR" property="drugsusage" />
+	    <result column="Dosage" jdbcType="VARCHAR" property="dosage" />
+	    <result column="Frequency" jdbcType="VARCHAR" property="frequency" />
+     </association>
+     <association property="drugs" javaType="com.neuedu.pojo.Drugs">
+        <id column="DID" jdbcType="INTEGER" property="id" />
+	    <result column="DrugsCode" jdbcType="CHAR" property="drugscode" />
+	    <result column="DrugsName" jdbcType="VARCHAR" property="drugsname" />
+	    <result column="DrugsFormat" jdbcType="VARCHAR" property="drugsformat" />
+	    <result column="DrugsUnit" jdbcType="VARCHAR" property="drugsunit" />
+	    <result column="Manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+	    <result column="DrugsDosageID" jdbcType="INTEGER" property="drugsdosageid" />
+	    <result column="DrugsTypeID" jdbcType="INTEGER" property="drugstypeid" />
+	    <result column="DrugsPrice" jdbcType="DECIMAL" property="drugsprice" />
+	    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+	    <result column="CreationDate" jdbcType="TIMESTAMP" property="creationdate" />
+	    <result column="LastUpdateDate" jdbcType="TIMESTAMP" property="lastupdatedate" />
+	    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+    </association>
+   </resultMap>
+  
+  <select id="selectDrugsDetailedAndDrug" parameterType="java.lang.Integer" resultMap="DrugsDetailedAndDrugResultMap">
+    select distinct
+    DrugsDetailed.ID as DDID, DrugsTempID, DrugsID, DrugsUsage, Dosage, Frequency,
+    Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+    DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+    from DrugsDetailed,Drugs
+    where Drugs.ID=DrugsID and DrugsTempID=#{drugsTempID}
+  </select>
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

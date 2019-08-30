@@ -84,6 +84,24 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  <select id="selectDrugstemplate" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+      distinct
+     DrugsTemplate.ID, Name, UserID, CreationTime, Scope, DelMark
+    from DrugsTemplate,User
+   	where  (Scope='1' or (Scope='2' and DrugsTemplate.UserID = User.ID and User.DeptID=#{userdept,jdbcType=INTEGER})
+    		or (Scope='3' and DrugsTemplate.UserID = #{userid,jdbcType=INTEGER})) and DelMark=1
+    order by DrugsTemplate.ID
+    
+  </select>
+  
+  
+  
+  
+  
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

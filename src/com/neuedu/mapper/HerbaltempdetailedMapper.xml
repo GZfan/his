@@ -84,6 +84,44 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  
+  <resultMap id="HerbalTempDetailedAndDrugsResultMap" type="com.neuedu.pojo.HerbalTempDetailedAndDrugs">
+     <association property="herbaltempdetailed" javaType="com.neuedu.pojo.Herbaltempdetailed">
+        <id column="HID" jdbcType="INTEGER" property="id" />
+	    <result column="HerbalTempID" jdbcType="INTEGER" property="herbaltempid" />
+	    <result column="HerbalID" jdbcType="INTEGER" property="herbalid" />
+	    <result column="Dosage" jdbcType="VARCHAR" property="dosage" />
+	    <result column="Unit" jdbcType="VARCHAR" property="unit" />
+	    <result column="Footnote" jdbcType="VARCHAR" property="footnote" />
+     </association>
+     <association property="drugs" javaType="com.neuedu.pojo.Drugs">
+        <id column="DID" jdbcType="INTEGER" property="id" />
+	    <result column="DrugsCode" jdbcType="CHAR" property="drugscode" />
+	    <result column="DrugsName" jdbcType="VARCHAR" property="drugsname" />
+	    <result column="DrugsFormat" jdbcType="VARCHAR" property="drugsformat" />
+	    <result column="DrugsUnit" jdbcType="VARCHAR" property="drugsunit" />
+	    <result column="Manufacturer" jdbcType="VARCHAR" property="manufacturer" />
+	    <result column="DrugsDosageID" jdbcType="INTEGER" property="drugsdosageid" />
+	    <result column="DrugsTypeID" jdbcType="INTEGER" property="drugstypeid" />
+	    <result column="DrugsPrice" jdbcType="DECIMAL" property="drugsprice" />
+	    <result column="MnemonicCode" jdbcType="VARCHAR" property="mnemoniccode" />
+	    <result column="CreationDate" jdbcType="TIMESTAMP" property="creationdate" />
+	    <result column="LastUpdateDate" jdbcType="TIMESTAMP" property="lastupdatedate" />
+	    <result column="DelMark" jdbcType="INTEGER" property="delmark" />
+    </association>
+   </resultMap>
+  <select id="selectHerbalTempDetailedAndDrugs" parameterType="java.lang.Integer" resultMap="HerbalTempDetailedAndDrugsResultMap">
+    select distinct
+    HerbalTempDetailed.ID as HID, HerbalTempID, HerbalID, Dosage, Unit, Footnote,
+    Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
+    DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
+    from HerbalTempDetailed,Drugs
+    where Drugs.ID=HerbalID and HerbalTempID=#{herbalTempID,jdbcType=INTEGER}
+  </select>
+  
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

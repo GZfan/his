@@ -50,6 +50,28 @@
     where RegistID=#{registID,jdbcType=INTEGER} and State=3 and ItemID=Fmeditem.ID
    </select>
    
+   <select id="getCheckPacks" parameterType="java.lang.Integer" resultMap="CheckapplyResultMap">
+    select 
+    CheckApply.ID as CID, MedicalID, RegistID, ItemID, Name, Objective, Position, IsUrgent, Num, CreationTime, 
+    DoctorID, CheckOperID, ResultOperID, CheckTime, Result, ResultTime, State, CheckApply.RecordType as CRecord, 
+    Fmeditem.ID as FID, ItemCode, ItemName, Format, Price, ExpClassID, DeptID, MnemonicCode, CreationDate, 
+    LastUpdateDate, Fmeditem.RecordType as FRecord, DelMark
+    from  CheckApply,Fmeditem
+    where RegistID=#{registID,jdbcType=INTEGER} and State in (1,2,3,4,5) and ItemID=Fmeditem.ID 
+    and CheckApply.RecordType = #{recordType,jdbcType=INTEGER}
+   </select>
+   
+   <select id="getCheckPacksToBeCheck" parameterType="java.lang.Integer" resultMap="CheckapplyResultMap">
+    select 
+    CheckApply.ID as CID, MedicalID, RegistID, ItemID, Name, Objective, Position, IsUrgent, Num, CreationTime, 
+    DoctorID, CheckOperID, ResultOperID, CheckTime, Result, ResultTime, State, CheckApply.RecordType as CRecord, 
+    Fmeditem.ID as FID, ItemCode, ItemName, Format, Price, ExpClassID, DeptID, MnemonicCode, CreationDate, 
+    LastUpdateDate, Fmeditem.RecordType as FRecord, DelMark
+    from  CheckApply,Fmeditem
+    where RegistID=#{registID,jdbcType=INTEGER} and State=3 and ItemID=Fmeditem.ID 
+    and CheckApply.RecordType = #{recordType,jdbcType=INTEGER}
+   </select>
+   
    
    <select id="getCheckappliesByID" parameterType="java.util.List" resultMap="CheckapplyResultMap">
     select CheckApply.ID, MedicalID, RegistID, ItemID, Name, Objective, Position, IsUrgent, Num, CreationTime, 

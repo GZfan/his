@@ -1,5 +1,6 @@
 package com.neuedu.mapper;
 
+import com.neuedu.pojo.DrugsDetailedAndDrug;
 import com.neuedu.pojo.Drugsdetailed;
 import com.neuedu.pojo.DrugsdetailedExample;
 import java.util.List;
@@ -27,4 +28,6 @@ public interface DrugsdetailedMapper {
     int updateByPrimaryKeySelective(Drugsdetailed record);
 
     int updateByPrimaryKey(Drugsdetailed record);
+    
+    public List<DrugsDetailedAndDrug> selectDrugsDetailedAndDrug(@Param("drugsTempID") int drugsTempID);
 }

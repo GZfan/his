@@ -1,6 +1,7 @@
 package com.neuedu.mapper;
 
 import com.neuedu.pojo.Herbaldetailed;
+import com.neuedu.pojo.HerbaldetailedAndDrug;
 import com.neuedu.pojo.HerbaldetailedExample;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
@@ -27,4 +28,6 @@ public interface HerbaldetailedMapper {
     int updateByPrimaryKeySelective(Herbaldetailed record);
 
     int updateByPrimaryKey(Herbaldetailed record);
+    
+    List<HerbaldetailedAndDrug> selectHerbaldetailedsByHerbalPrescriptionID(@Param("herbalpresID") int herbalpresID);
 }

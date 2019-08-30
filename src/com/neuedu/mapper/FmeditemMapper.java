@@ -27,4 +27,6 @@ public interface FmeditemMapper {
     int updateByPrimaryKeySelective(Fmeditem record);
 
     int updateByPrimaryKey(Fmeditem record);
+    
+    List<Fmeditem> selectFmeditems(@Param("checkTempID") Integer checkTempID);
 }

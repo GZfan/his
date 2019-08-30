@@ -1,5 +1,6 @@
 package com.neuedu.mapper;
 
+
 import com.neuedu.pojo.Drugstemplate;
 import com.neuedu.pojo.DrugstemplateExample;
 import java.util.List;
@@ -27,4 +28,9 @@ public interface DrugstemplateMapper {
     int updateByPrimaryKeySelective(Drugstemplate record);
 
     int updateByPrimaryKey(Drugstemplate record);
+    
+    List<Drugstemplate> selectDrugstemplate(@Param("userid") Integer userid,@Param("userdept") Integer userdept);
+
+
+
 }

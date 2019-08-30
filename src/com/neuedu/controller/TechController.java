@@ -58,12 +58,10 @@ public class TechController {
             techService.updateRegistrationStatus(id1);
             resultDTO.setStatus("OK");
             resultDTO.setMsg("更新成功！");
-            System.out.println("成功了");
         } catch (Exception e) {
             e.printStackTrace();
             resultDTO.setStatus("ERROR");
             resultDTO.setMsg("更新失败！");
-            System.out.println("失败了");
         }
         return resultDTO;
     }
@@ -73,7 +71,6 @@ public class TechController {
 	@ResponseBody
     @RequestMapping("/insertExaminationResult")
     public ResultDTO insertExaminationResult(@RequestBody Checkapply checkapply){
-
         ResultDTO resultDTO = new ResultDTO();
         try {
             techService.updateCheckapply(checkapply);
@@ -86,15 +83,5 @@ public class TechController {
         }
         return resultDTO;
     }
-	
-	
-	@RequestMapping("/resp")
-	@ResponseBody
-	public void handleRequest(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-	    resp.getWriter().println("hello HttpServletResponse");
-	  }
-	
-	
-
 	
 }

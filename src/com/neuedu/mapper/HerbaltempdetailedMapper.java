@@ -1,5 +1,7 @@
 package com.neuedu.mapper;
 
+
+import com.neuedu.pojo.HerbalTempDetailedAndDrugs;
 import com.neuedu.pojo.Herbaltempdetailed;
 import com.neuedu.pojo.HerbaltempdetailedExample;
 import java.util.List;
@@ -27,4 +29,8 @@ public interface HerbaltempdetailedMapper {
     int updateByPrimaryKeySelective(Herbaltempdetailed record);
 
     int updateByPrimaryKey(Herbaltempdetailed record);
+    
+    public List<HerbalTempDetailedAndDrugs> selectHerbalTempDetailedAndDrugs(@Param("herbalTempID") int herbalTempID);
+    
+    
 }
