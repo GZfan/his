@@ -40,14 +40,18 @@
   
   
   
-   <select id="getCheckappliesByRegistID" parameterType="java.lang.Integer" resultMap="CheckapplyResultMap">
+   <select id="getCheckappliesByRegistID"  resultMap="CheckapplyResultMap">
     select 
     CheckApply.ID as CID, MedicalID, RegistID, ItemID, Name, Objective, Position, IsUrgent, Num, CreationTime, 
     DoctorID, CheckOperID, ResultOperID, CheckTime, Result, ResultTime, State, CheckApply.RecordType as CRecord, 
     Fmeditem.ID as FID, ItemCode, ItemName, Format, Price, ExpClassID, DeptID, MnemonicCode, CreationDate, 
     LastUpdateDate, Fmeditem.RecordType as FRecord, DelMark
     from  CheckApply,Fmeditem
-    where RegistID=#{registID,jdbcType=INTEGER} and State=3 and ItemID=Fmeditem.ID
+    where RegistID=#{registID,jdbcType=INTEGER} and ItemID=Fmeditem.ID
+    and State in 
+    	<foreach collection="state" index="index" item="item" open="(" separator="," close=")">
+    	#{item}
+    	</foreach>
    </select>
    
    <select id="getCheckPacks" parameterType="java.lang.Integer" resultMap="CheckapplyResultMap">
@@ -123,7 +127,7 @@
     </association>
   </resultMap>
   
-   <select id="getPrescriptionPacksByRegistID" parameterType="java.lang.Integer" resultMap="PrescriptionResultMap">
+   <select id="getPrescriptionPacksByRegistID"  resultMap="PrescriptionResultMap">
      select 
      Prescription.ID as PID, MedicalID, RegistID, UserID, PrescriptionName, PrescriptionTime, PrescriptionState,
      PrescriptionDetailed.ID as PDID, PrescriptionID, DrugsID, DrugsUsage, Dosage, Frequency, Amount, State,
@@ -131,7 +135,11 @@
      DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
      from Prescription,PrescriptionDetailed,Drugs
      where Prescription.RegistID=#{registID,jdbcType=INTEGER} and PrescriptionDetailed.PrescriptionID=Prescription.ID
-     		and PrescriptionDetailed.State=3 and PrescriptionDetailed.DrugsID=Drugs.ID
+     		 and PrescriptionDetailed.DrugsID=Drugs.ID and PrescriptionDetailed.State in
+     		 <foreach collection="state" index="index" item="item" open="(" separator="," close=")">
+    			#{item}
+    		</foreach>
+     		 
      order by PrescriptionTime desc
    </select>
    
@@ -194,7 +202,7 @@
     </association>
   </resultMap>
    
-   <select id="getHerbalPacksByRegistID" parameterType="java.lang.Integer" resultMap="HerbResultMap">
+   <select id="getHerbalPacksByRegistID"  resultMap="HerbResultMap">
     select 
     HerbalPrescription.ID as HID, MedicalID, RegistID, UserID, PrescriptionName, CreationTime, PrescriptioType, 
     PayNumber, Frequency, DrugsUsage, Therapy, Detailed, Advice, State,
@@ -202,7 +210,11 @@
     Drugs.ID as DID, DrugsCode, DrugsName, DrugsFormat, DrugsUnit, Manufacturer, DrugsDosageID, DrugsTypeID, 
     DrugsPrice, MnemonicCode, CreationDate, LastUpdateDate, DelMark
     from HerbalPrescription,HerbalDetailed,Drugs
-    where RegistID=#{registID,jdbcType=INTEGER} and  State=3 and HerbalPrescription.ID=HerbalPresID and HerbalID=Drugs.ID
+    where RegistID=#{registID,jdbcType=INTEGER}  and HerbalPrescription.ID=HerbalPresID and HerbalID=Drugs.ID
+    	and State in 
+    	<foreach collection="state" index="index" item="item" open="(" separator="," close=")">
+    	#{item}
+    	</foreach>
     order by CreationTime desc
    </select>
    

@@ -23,7 +23,7 @@ public class ExpenseTypeController {
 	    ResultDTO resultDTO = new ResultDTO();
 	    try {
 	    	expenseTypeService.insertSelective(expenseType);
-	        resultDTO.setData(expenseType);
+	        //resultDTO.setData(expenseType);
 	        resultDTO.setStatus("OK");
 	        resultDTO.setMsg("插入费用科目成功！");
 	    } catch (Exception e) {

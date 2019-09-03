@@ -92,6 +92,21 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+  <select id="selectDrugsToBeDistributed" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select distinct
+    Drugs.ID, Drugs.DrugsCode, Drugs.DrugsName, Drugs.DrugsFormat, Drugs.DrugsUnit, Drugs.Manufacturer, Drugs.DrugsDosageID, Drugs.DrugsTypeID, 
+    Drugs.DrugsPrice, Drugs.MnemonicCode, Drugs.CreationDate, Drugs.LastUpdateDate, Drugs.DelMark
+    from Drugs,Prescription,PrescriptionDetailed,HerbalPrescription,HerbalDetailed
+    where ( Prescription.RegistID = #{registID,jdbcType=INTEGER} and  Prescription.ID= PrescriptionDetailed.PrescriptionID 
+    	and PrescriptionDetailed.State=3 and PrescriptionDetailed.DrugsID=Drugs.ID) 
+    	or (HerbalPrescription.RegistID=#{registID,jdbcType=INTEGER} and  HerbalPrescription.State=3 and 
+    	HerbalPrescription.ID=HerbalDetailed.HerbalPresID and HerbalDetailed.HerbalID=Drugs.ID)
+  </select>
+  
+  
+  
+  
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />

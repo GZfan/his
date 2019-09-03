@@ -362,9 +362,13 @@ public class RegisterServiceImpl implements RegisterService{
 	@Override
 	public UnchargeItems getWithdrawableItems(Integer registID) {
 		UnchargeItems unchargeItems=new UnchargeItems();
-		unchargeItems.setCheckapplies(chargedMapper.getCheckappliesByRegistID(registID));
-		unchargeItems.setPrescriptionPacks(chargedMapper.getPrescriptionPacksByRegistID(registID));
-		unchargeItems.setHerbalPacks(chargedMapper.getHerbalPacksByRegistID(registID));
+		ArrayList<Integer> list=new ArrayList<Integer>();
+		list.add(3);
+		unchargeItems.setCheckapplies(chargedMapper.getCheckappliesByRegistID(registID,list));
+		list.clear();
+		list.add(5);
+		unchargeItems.setPrescriptionPacks(chargedMapper.getPrescriptionPacksByRegistID(registID,list));
+		unchargeItems.setHerbalPacks(chargedMapper.getHerbalPacksByRegistID(registID,list));
 		return unchargeItems;
 	}
 

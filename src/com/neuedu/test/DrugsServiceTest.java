@@ -5,9 +5,11 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.neuedu.pojo.Drugs;
 import com.neuedu.pojo.DrugsDetailedAndDrug;
 import com.neuedu.pojo.HerbalTempDetailedAndDrugs;
 import com.neuedu.pojo.Herbaltemplate;
+import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
 import com.neuedu.service.DrugService;
 
@@ -23,7 +25,8 @@ public class DrugsServiceTest extends BaseTest {
 		user.setId(4);
 		user.setDeptid(2);
 		//List<Herbaltemplate> list=drugService.getHerbaltemplate(user);
-		List<HerbalTempDetailedAndDrugs> list=drugService.getHerbalTempDetailedAndDrug(1);
+		//List<HerbalTempDetailedAndDrugs> list=drugService.getHerbalTempDetailedAndDrug(1);
+		UnchargeItems list=drugService.getDrugsToBeDistributed("600614");
 		return;
 	}
 

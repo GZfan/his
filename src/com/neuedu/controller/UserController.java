@@ -26,7 +26,7 @@ import com.neuedu.service.UserService;
 
 // 告诉spring mvc这是一个控制器类
 @Controller
-@RequestMapping("/user")
+@RequestMapping("user")
 public class UserController {
 	@Autowired
 	UserService userService;
@@ -85,7 +85,7 @@ public class UserController {
     }
 	
 	//查询用户 经id
-    @RequestMapping("/getUserbyid")
+    @RequestMapping("getUserbyid")
     public ResultDTO<User> getUserById(Integer id){
         ResultDTO resultDTO = new ResultDTO();
         try {
@@ -119,7 +119,7 @@ public class UserController {
     
 	  //获得当前用户
 	@RequestMapping("/getuser")
-	public ResultDTO<User> getUser(){
+	public @ResponseBody ResultDTO<User> getUser(){
 	    ResultDTO<User> resultDTO = new ResultDTO<>();
 	    try {
 	    	Subject subject = SecurityUtils.getSubject();  

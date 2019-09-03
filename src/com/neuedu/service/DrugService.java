@@ -43,5 +43,7 @@ public interface DrugService {
     
     public List<HerbalTempDetailedAndDrugs> getHerbalTempDetailedAndDrug(int herbalTempID);
 	
+	public UnchargeItems getDrugsToBeDistributed(String CaseNumber);
 	
+	public UnchargeItems getDrugsToBeDrawback(String caseNumber);
 }

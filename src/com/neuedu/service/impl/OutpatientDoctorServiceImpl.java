@@ -395,4 +395,11 @@ public class OutpatientDoctorServiceImpl implements OutpatientDoctorService{
 		return herbaldetailedMapper.selectHerbaldetailedsByHerbalPrescriptionID(herbalpresID);
 	}
 
+	@Override
+	public void updatePrescriptionDetaileds(List<Prescriptiondetailed> prescriptiondetaileds) {
+		for(Prescriptiondetailed prescriptiondetailed:prescriptiondetaileds) {
+			prescriptiondetailedMapper.updateByPrimaryKeySelective(prescriptiondetailed);
+		}	
+	}
+
 }

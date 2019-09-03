@@ -18,19 +18,12 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService{
     ExpenseclassMapper expenseTypeMapper;
 
 	@Override
-	public Integer insertSelective(Expenseclass expenseType) {
-		
-		expenseTypeMapper.insert(expenseType);
-		//expenseType.setId(expenseTexpenseTypeMapper.countByExample(null)ypeMapper.); 
-		Integer num=(int) expenseTypeMapper.countByExample(null);
-		expenseType.setId(num);
-		return expenseType.getId();
+	public void insertSelective(Expenseclass expenseType) {
+		expenseTypeMapper.insertSelective(expenseType);
 	}
 
 	@Override
 	public void deleteById(Integer id) {
-		
-		//expenseTypeMapper.deleteByPrimaryKey(id);
 		Expenseclass expenseType=expenseTypeMapper.selectByPrimaryKey(id);
 		expenseType.setDelmark(0);
 		expenseTypeMapper.updateByPrimaryKeySelective(expenseType);
@@ -38,13 +31,11 @@ public class ExpenseTypeServiceImpl implements ExpenseTypeService{
 
 	@Override
 	public void update(Expenseclass expenseType) {
-		
 		expenseTypeMapper.updateByPrimaryKey(expenseType);
 	}
 
 	@Override
 	public List<Expenseclass> getAllExpenseType() {
-		
 		ExpenseclassExample expenseclassExample=new ExpenseclassExample();
 		return expenseTypeMapper.selectByExample(expenseclassExample);
 	}

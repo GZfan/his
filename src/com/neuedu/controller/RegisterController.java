@@ -163,7 +163,7 @@ public class RegisterController {
 	public @ResponseBody ResultDTO<UnchargeItems> showWithdrawableItem(int id){
 		ResultDTO<UnchargeItems> resultDTO=new ResultDTO<>();
 		try {
-			//resultDTO.setData();
+			resultDTO.setData(registerService.getWithdrawableItems(id));
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("获取成功！");
 		} catch (Exception e) {

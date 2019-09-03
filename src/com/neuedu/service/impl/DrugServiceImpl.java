@@ -1,5 +1,6 @@
 package com.neuedu.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.neuedu.service.DrugService;
@@ -18,6 +19,9 @@ import com.neuedu.mapper.*;
 public class DrugServiceImpl implements DrugService{
 	
 	@Autowired
+	private RegisterMapper registerMapper;
+	
+	@Autowired
 	private DrugstemplateMapper drugstemplateMapper;
 	
 	@Autowired
@@ -31,6 +35,9 @@ public class DrugServiceImpl implements DrugService{
 	
 	@Autowired
 	private HerbaldetailedMapper herbaldetailedMapper;
+	
+	@Autowired
+	private ChargedMapper chargeMapper;
 	
 	@Resource
 	DrugsMapper drugsMapper;
@@ -175,6 +182,44 @@ public class DrugServiceImpl implements DrugService{
 		herbaldetailedMapper.deleteByExample(herbaldetailedExample);
 	}
 
+	@Override
+	public UnchargeItems getDrugsToBeDistributed(String CaseNumber) {
+		RegisterExample example=new RegisterExample();
+		com.neuedu.pojo.RegisterExample.Criteria criteria=example.createCriteria();
+		criteria.andCasenumberEqualTo(CaseNumber);
+		example.setOrderByClause("VisitDate DESC");
+		List<Register> list= registerMapper.selectByExample(example);
+		if(list.size()==0) {
+			return null;
+		}
+		Integer registID=list.get(0).getId();
+		ArrayList<Integer> state=new ArrayList<Integer>();
+		state.add(3);
+		UnchargeItems unchargeItems=new UnchargeItems();
+		unchargeItems.setPrescriptionPacks(chargeMapper.getPrescriptionPacksByRegistID(registID, state));
+		unchargeItems.setHerbalPacks(chargeMapper.getHerbalPacksByRegistID(registID, state));
+		return unchargeItems;
+	}
 
+	@Override
+	public UnchargeItems getDrugsToBeDrawback(String caseNumber) {
+		RegisterExample example=new RegisterExample();
+		com.neuedu.pojo.RegisterExample.Criteria criteria=example.createCriteria();
+		criteria.andCasenumberEqualTo(caseNumber);
+		example.setOrderByClause("VisitDate DESC");
+		List<Register> list= registerMapper.selectByExample(example);
+		if(list.size()==0) {
+			return null;
+		}
+		Integer registID=list.get(0).getId();
+		ArrayList<Integer> state=new ArrayList<Integer>();
+		state.add(4);
+		UnchargeItems unchargeItems=new UnchargeItems();
+		unchargeItems.setPrescriptionPacks(chargeMapper.getPrescriptionPacksByRegistID(registID, state));
+		unchargeItems.setHerbalPacks(chargeMapper.getHerbalPacksByRegistID(registID, state));
+		return unchargeItems;
+	}
+
+	
 	
 }

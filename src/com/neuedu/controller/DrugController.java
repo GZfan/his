@@ -24,6 +24,7 @@ import com.neuedu.pojo.Drugstemplate;
 import com.neuedu.pojo.HerbalTempDetailedAndDrugs;
 import com.neuedu.pojo.Herbaldetailed;
 import com.neuedu.pojo.Herbaltemplate;
+import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
 import com.neuedu.service.DrugService;
 import com.neuedu.util.ResultDTO;
@@ -385,6 +386,23 @@ public class DrugController {
 			e.printStackTrace();
 			resultDTO.setStatus("ERROR");
 			resultDTO.setMsg("删除失败！");
+		}
+		return resultDTO;
+	}
+	
+	
+	//获得待发放药品
+	@RequestMapping("getdrugstobedistributed")
+	public @ResponseBody ResultDTO<UnchargeItems> getDrugsToBeDistributed(@RequestBody String caseNumber) {
+		ResultDTO<UnchargeItems> resultDTO=new ResultDTO<>();
+		try {  
+			resultDTO.setData(drugService.getDrugsToBeDistributed(caseNumber));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
 		}
 		return resultDTO;
 	}

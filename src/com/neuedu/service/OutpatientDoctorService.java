@@ -96,6 +96,8 @@ public interface OutpatientDoctorService {
 	
 	public void deletePrescriptionDetaileds(List<Integer> ids);
 	
+	public void updatePrescriptionDetaileds(List<Prescriptiondetailed> prescriptiondetaileds);
+	
 	public List<PrescriptiondetailedAndDrug> getPrescriptiondetailedsByPrescriptionID(int prescriptionID);
 	
 	

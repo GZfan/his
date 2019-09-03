@@ -27,4 +27,6 @@ public interface DrugsMapper {
     int updateByPrimaryKeySelective(Drugs record);
 
     int updateByPrimaryKey(Drugs record);
+    
+    List<Drugs> selectDrugsToBeDistributed(@Param("registID") Integer registID);
 }
