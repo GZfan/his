@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.neuedu.pojo.ChargeList;
 import com.neuedu.pojo.DailySettleAccounts;
+import com.neuedu.pojo.Department;
 import com.neuedu.pojo.Invoice;
 import com.neuedu.pojo.InvoiceDetail;
 import com.neuedu.pojo.Patientcosts;
 import com.neuedu.pojo.PatientcostsSearchRequire;
 import com.neuedu.pojo.Register;
+import com.neuedu.pojo.Registlevel;
 import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
 import com.neuedu.util.ResultDTO;
@@ -20,8 +22,14 @@ import com.neuedu.util.ResultDTO;
 
 
 public interface RegisterService {
+	
+	public List<Registlevel> getRegistlevels();
+	
+	public List<Department> getDepartments();
+	
+	public List<User> getdoctoravailable(int registlevelID,int departmentID);
 
-	public void addRegister(Register register,User user);
+	public Invoice addRegister(Register register,User user);
 	
 	public void deleteRegisterById(Integer id);
 	

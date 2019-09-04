@@ -18,7 +18,9 @@ import com.neuedu.pojo.Invoice;
 import com.neuedu.pojo.InvoiceDetail;
 import com.neuedu.pojo.Patientcosts;
 import com.neuedu.pojo.PatientcostsSearchRequire;
+import com.neuedu.pojo.RegistInfo;
 import com.neuedu.pojo.Register;
+import com.neuedu.pojo.Registlevel;
 import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
 import com.neuedu.service.RegisterService;
@@ -38,14 +40,49 @@ public class RegisterController {
 	@Autowired
 	RegisterService registerService;
 	
+	//获取挂号级别和科室等
+	@RequestMapping("getregistinfo")
+	public @ResponseBody ResultDTO<RegistInfo> getRegistlevel() {
+		ResultDTO<RegistInfo> resultDTO=new ResultDTO<>();
+		try {
+			RegistInfo registInfo=new RegistInfo();
+			registInfo.setRegistlevel(registerService.getRegistlevels());
+			registInfo.setDepartment(registerService.getDepartments());
+			resultDTO.setData(registInfo);
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+		}
+		return resultDTO;
+	}
+	
+	//获取挂号级别和科室等
+	@RequestMapping("getdoctoravailable")
+	public @ResponseBody ResultDTO<List<User>> getdoctoravailable(int registlevelID, int departmentID) {
+		ResultDTO<List<User>> resultDTO=new ResultDTO<>();
+		try {
+			resultDTO.setData(registerService.getdoctoravailable(registlevelID, departmentID));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+		}
+		return resultDTO;
+	}
+	
 	//挂号，默认认为挂号员已经收挂号相关费用
 	@RequestMapping("add")
-	public @ResponseBody ResultDTO<Register> addRegister(@RequestBody Register register) {
-		ResultDTO<Register> resultDTO=new ResultDTO<Register>();
+	public @ResponseBody ResultDTO<Invoice> addRegister(@RequestBody Register register) {
+		ResultDTO<Invoice> resultDTO=new ResultDTO<>();
 		try {  
 			Session session = SecurityUtils.getSubject().getSession(); 
 			User user=(User)session.getAttribute("user");
-			registerService.addRegister(register,user);
+			resultDTO.setData(registerService.addRegister(register,user));
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("挂号成功！");
 		} catch (Exception e) {

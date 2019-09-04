@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.neuedu.mapper.ChargedMapper;
 import com.neuedu.mapper.CheckapplyMapper;
 import com.neuedu.mapper.ConstantitemMapper;
+import com.neuedu.mapper.DepartmentMapper;
 import com.neuedu.mapper.HerbalprescriptionMapper;
 import com.neuedu.mapper.InvoiceMapper;
 import com.neuedu.mapper.PatientcostsMapper;
@@ -22,12 +23,16 @@ import com.neuedu.mapper.PrescriptiondetailedMapper;
 import com.neuedu.mapper.RegisterMapper;
 import com.neuedu.mapper.RegistlevelMapper;
 import com.neuedu.mapper.RegistworkMapper;
+import com.neuedu.mapper.SchedulingMapper;
 import com.neuedu.mapper.UnchargeMapper;
+import com.neuedu.mapper.UserMapper;
 import com.neuedu.pojo.ChargeList;
 import com.neuedu.pojo.CheckPack;
 import com.neuedu.pojo.Checkapply;
 import com.neuedu.pojo.CheckapplyExample;
 import com.neuedu.pojo.DailySettleAccounts;
+import com.neuedu.pojo.Department;
+import com.neuedu.pojo.DepartmentExample;
 import com.neuedu.pojo.HerbalPack;
 import com.neuedu.pojo.Herbalprescription;
 import com.neuedu.pojo.HerbalprescriptionExample;
@@ -44,11 +49,16 @@ import com.neuedu.pojo.Register;
 import com.neuedu.pojo.RegisterExample;
 import com.neuedu.pojo.RegisterExample.Criteria;
 import com.neuedu.pojo.Registlevel;
+import com.neuedu.pojo.RegistlevelExample;
 import com.neuedu.pojo.Registwork;
 import com.neuedu.pojo.RegistworkExample;
 import com.neuedu.pojo.RegistworkExample.Criterion;
+import com.neuedu.pojo.Scheduling;
+import com.neuedu.pojo.SchedulingExample;
 import com.neuedu.pojo.UnchargeItems;
 import com.neuedu.pojo.User;
+import com.neuedu.pojo.UserExample;
+import com.neuedu.service.DepartmentService;
 import com.neuedu.service.RegisterService;
 import com.neuedu.util.GetDate;
 
@@ -58,6 +68,12 @@ public class RegisterServiceImpl implements RegisterService{
 
 	@Autowired
 	RegisterMapper registerMapper;
+	
+	@Autowired
+	private UserMapper userMapper;
+	
+	@Autowired
+	private DepartmentMapper departmentMapper;
 	
 	@Autowired
 	ConstantitemMapper constantItemMapper;
@@ -89,8 +105,14 @@ public class RegisterServiceImpl implements RegisterService{
 	@Autowired
 	RegistworkMapper registworkMapper;
 	
+	@Autowired
+	private SchedulingMapper schedulingMapper;
+	
+	@Autowired
+	private RegistlevelMapper registlevelMapper;
+	
 	@Override
-	public void addRegister(Register register,User user) {
+	public Invoice addRegister(Register register,User user) {
 		register.setRegisterid(user.getId());;
 		registerMapper.insertSelective(register);
 		int registerId=register.getId();
@@ -118,8 +140,11 @@ public class RegisterServiceImpl implements RegisterService{
 		invoice.setRegistid(registerId);
 		invoice.setDailystate(0);
 		invoice.setUserid(register.getRegisterid());
-		//TODO
-		invoice.setFeetype(51);
+		if(register.getSettleid()==1) {
+			invoice.setFeetype(51);
+		} else {
+			invoice.setFeetype(52);
+		}
 		
 		invoiceMapper.insertSelective(invoice);
 		int invoiceId=invoice.getId();
@@ -135,10 +160,13 @@ public class RegisterServiceImpl implements RegisterService{
 		cost.setRegisterid(register.getRegisterid());
 		cost.setCreateoperid(register.getRegisterid());
 		
-		//TODO
-		cost.setFeetype(51);
-		
+		if(register.getSettleid()==1) {
+			cost.setFeetype(51);
+		} else {
+			cost.setFeetype(52);
+		}
 		paintCostMapper.insertSelective(cost);
+		return invoice;
 	}
 
 	@Override
@@ -700,6 +728,63 @@ public class RegisterServiceImpl implements RegisterService{
 		criteria.andRegistidIn(idList);
 		patientcostsExample.setOrderByClause("PayTime ASC");
 		return paintCostMapper.selectByExample(patientcostsExample);
+	}
+
+	@Override
+	public List<Registlevel> getRegistlevels() {
+		RegistlevelExample registlevelExample=new RegistlevelExample();
+		return registlevelMapper.selectByExample(registlevelExample);
+	}
+
+	@Override
+	public List<Department> getDepartments() {
+		DepartmentExample departmentExample=new DepartmentExample();
+		return departmentMapper.selectByExample(departmentExample);
+	}
+
+	@Override
+	public List<User> getdoctoravailable(int registlevelID, int departmentID) {
+		Date now=GetDate.getCurrDate();
+		SchedulingExample schedulingExample=new SchedulingExample();
+		com.neuedu.pojo.SchedulingExample.Criteria criteria=schedulingExample.createCriteria();
+		if(now.getHours()<12) {
+			criteria.andNoonEqualTo("上午");
+		}else {
+			criteria.andNoonEqualTo("下午");
+		}
+		criteria.andScheddateEqualTo(GetDate.getDay());
+		criteria.andDeptidEqualTo(departmentID);
+		List<Scheduling> schedulings=schedulingMapper.selectByExample(schedulingExample);
+		ArrayList<Integer> doctorID=new ArrayList<Integer>();
+		for(Scheduling scheduling:schedulings) {
+			doctorID.add(scheduling.getUserid());
+		}
+		int maxNum=registlevelMapper.selectByPrimaryKey(registlevelID).getRegistquota();
+		Date todayDate=GetDate.getDay();
+		for(int i=0;i<doctorID.size();i++) {
+			RegisterExample registerExample=new RegisterExample();
+			Criteria registercriteria=registerExample.createCriteria();
+			registercriteria.andVisitdateEqualTo(todayDate);
+			registercriteria.andUseridEqualTo(doctorID.get(i));
+			if(now.getHours()<12) {
+				registercriteria.andNoonEqualTo("上午");
+			} else {
+				registercriteria.andNoonEqualTo("下午");
+			}
+			List<Register> list=registerMapper.selectByExample(registerExample);
+			if(list.size()>maxNum) {
+				doctorID.remove(i);
+				i--;
+			}
+		}
+		if(doctorID==null||doctorID.size()==0) {
+			return null;
+		} else {
+			UserExample userExample=new UserExample();
+			userExample.createCriteria().andIdIn(doctorID);
+			return userMapper.selectByExample(userExample);
+		}
+		
 	}
 	
 	
