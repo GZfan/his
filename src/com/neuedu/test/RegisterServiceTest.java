@@ -26,7 +26,7 @@ public class RegisterServiceTest extends BaseTest {
 		System.out.println(date);
 		return;
 	}
-	@Test
+	//@Test
 	public void getDailySettleAccountsTest() throws Exception{
 		SimpleDateFormat sd=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date startDate=sd.parse("2019-08-21 00:00:00");
@@ -48,5 +48,10 @@ public class RegisterServiceTest extends BaseTest {
 		patientcostsSearchRequire.setCaseNumber("12345678");
 		List<Patientcosts> list=registerservice.getPatientcosts(patientcostsSearchRequire);
 		return ;
+	}
+	@Test
+	public void test1() {
+		List<User> list=registerservice.getdoctoravailable(1, 1);
+		return;
 	}
 }

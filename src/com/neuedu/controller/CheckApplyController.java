@@ -13,7 +13,7 @@ import com.neuedu.pojo.Checkapply;
 import com.neuedu.service.CheckApplyService;
 
 
-//TODO   不符合规范
+//TODO   不符合规范,已经废弃
 @Controller
 public class CheckApplyController {
 	@Autowired

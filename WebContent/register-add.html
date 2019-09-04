@@ -1,0 +1,418 @@
+<!--_meta 作为公共模版分离出去-->
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5shiv.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="static/h-ui.admin/css/style.css" />
+<!--[if IE 6]>
+<script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<!--/meta 作为公共模版分离出去-->
+
+<title>现场挂号</title>
+<meta name="keywords" content="">
+<meta name="description" content="">
+</head>
+<body>
+<article class="page-container">
+	<form  class="form form-horizontal" id="form-member-add">
+		<div class="row cl">
+			<label class="form-label col-xs-1 col-sm-1">挂号信息</label>
+			<label class="form-label col-xs-11 col-sm-11"></label>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>挂号级别：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<span class="select-box"><select class="select" id="registlevel" name="registleid">
+					
+					
+				</select></span>
+			</div>
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>挂号科室：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<span class="select-box"><select class="select" id="department" name="deptid">
+					
+					
+				</select></span>
+			</div>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input class="btn btn-default" type="button" id="doctorsearch" value="医生查询">
+			</div>
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>医生：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<span class="select-box"><select class="select" id="doctor" name="userid">
+					
+					
+				</select></span>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>姓名：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input type="text" class="input-text"  id="realname" name="realname">
+			</div>
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>性别：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<span class="select-box"><select class="select" name="gender">
+					<option value="71">男</option>
+					<option value="72">女</option>
+				</select></span>
+			</div>
+			<label class="form-label col-xs-1 col-sm-1">出生日期：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input type="date" class="input-text"  name="birthdate">
+			</div>
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>年龄：</label>
+			<div class="formControls col-xs-1 col-sm-1">
+				<input type="text" class="input-text" name="age">
+			</div>
+			<div class="formControls col-xs-1 col-sm-1">
+				<span class="select-box"><select class="select" name="agetype">
+					<option value="岁">岁</option>
+					<option value="月">月</option>
+					<option value="日">日</option>
+				</select></span>
+			</div>
+		</div>	
+		<div class="row cl">
+			<label class="form-label col-xs-1 col-sm-1">身份证号：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input type="text" class="input-text" name="idnumber" >
+			</div>
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>结算类别：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<span class="select-box"><select class="select" name="settleid">
+					<option value="1">自费</option>
+					<option value="2">医保</option>
+				</select></span>
+			</div>
+			<label class="form-label col-xs-1 col-sm-1">家庭住址：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input type="text" class="input-text" name="homeaddress" >
+			</div>
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>是否要病历本：</label>
+			<div class="formControls col-xs-2 col-sm-1">
+				<span class="select-box"><select class="select" name="isbook">
+					<option value="是">是</option>
+					<option value="否">否</option>
+				</select></span>
+			</div>
+		</div>	
+		<div class="row cl">
+			<label class="form-label col-xs-1 col-sm-1"><span class="c-red">*</span>病历号：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input id="casenumber" type="text" class="input-text" name="casenumber" >
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="formControls col-xs-2 col-sm-2">
+				<input class="btn btn-primary radius" type="submit" onclick="sumit(event)" value="&nbsp;&nbsp;挂号&nbsp;&nbsp;">
+			</div>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input class="btn btn-primary radius" type="reset" value="&nbsp;&nbsp;清空&nbsp;&nbsp;">
+			</div>			
+			<label class="form-label col-xs-5 col-sm-5"></label>
+		</div>
+			
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script> 
+<script type="text/javascript" src="static/h-ui.admin/js/H-ui.admin.js"></script> <!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript" src="lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+$(function(){
+	$.ajax({
+			type: "get", 
+			url: "register/getregistinfo",  
+			success: function(data){
+				if(data.status=="OK"){
+					registlevel=data.data.registlevel;
+					department=data.data.department;
+					for(var i=0;i<registlevel.length;i++){
+						var option="<option value=\""+registlevel[i].id+"\">"+registlevel[i].registname+"</option>";
+						$("#registlevel").append(option);
+					}
+					for(var i=0;i<department.length;i++){
+						$("#department").append("<option value=\""+department[i].id+"\">"+department[i].deptname+"</option>");
+					}
+				}else {
+					alert("信息获取失败！");
+				}
+			}
+	});
+
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-member-add").validate({
+		rules:{
+			username:{
+				required:true,
+			},
+			sex:{
+				required:true,
+			},
+			mobile:{
+				required:true,
+			},
+			email:{
+				required:true,
+				email:true,
+			},
+			uploadfile:{
+				required:true,
+			},
+			
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			//$(form).ajaxSubmit();
+			var index = parent.layer.getFrameIndex(window.name);
+			//parent.$('.btn-refresh').click();
+			parent.layer.close(index);
+		}
+	});
+
+	$("#casenumber").attr("value",guid());
+
+	$("#doctorsearch").click(function(){
+		var location="register/getdoctoravailable?registlevelID="+$("#registlevel").val()+"&departmentID="+$("#department").val();
+		$.ajax({
+			type: "get", 
+			url: location,  
+			success: function(data){
+				if(data.status=="OK"){
+					doctor=data.data;
+					if(doctor==null||doctor.length==0){
+						alert("没有符合条件的医生!");
+					}else {
+						for(var i=0;i<doctor.length;i++){
+							$("#doctor").append("<option value=\""+doctor[i].id+"\">"+doctor[i].realname+"</option>");
+						}
+					}
+					
+				}else {
+					alert("没有符合条件的医生!");
+				}
+			}
+		});
+	});
+
+
+	
+});
+
+//将josn对象赋值给form
+$.fn.loadData = function (obj) {
+	var key, value, tagName, type, arr;
+
+	this.reset();
+
+	for (var x in obj) {
+		if (obj.hasOwnProperty(x)) {
+			key = x;
+			value = obj[x];
+
+			this.find("[name='" + key + "'],[name='" + key + "[]']").each(function () {
+				tagName = $(this)[0].tagName.toUpperCase();
+				type = $(this).attr('type');
+				if (tagName == 'INPUT') {
+					if (type == 'radio') {
+						if ($(this).val() == value) {
+								$(this).attr('checked', true);
+						}
+					} else if (type == 'checkbox') {
+						arr = value.split(',');
+						for (var i = 0; i < arr.length; i++) {
+							if ($(this).val() == arr[i]) {
+									$(this).attr('checked', true);
+								break;
+							}
+						}
+					} else {
+						$(this).val(value);
+					}
+				} else if (tagName == 'SELECT' || tagName == 'TEXTAREA') {
+					$(this).val(value);
+				}
+			});
+		}
+	}
+}
+
+//把表单转换出json对象
+$.fn.toJson = function () {
+	var self = this,
+		json = {},
+		push_counters = {},
+		patterns = {
+			"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+			"key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+			"push": /^$/,
+			"fixed": /^\d+$/,
+			"named": /^[a-zA-Z0-9_]+$/
+		};
+
+	this.build = function (base, key, value) {
+		base[key] = value;
+		return base;
+	};
+
+	this.push_counter = function (key) {
+		if (push_counters[key] === undefined) {
+			push_counters[key] = 0;
+		}
+		return push_counters[key]++;
+	};
+
+	$.each($(this).serializeArray(), function () {
+		// skip invalid keys
+		if (!patterns.validate.test(this.name)) {
+			return;
+		}
+
+		var k,
+			keys = this.name.match(patterns.key),
+			merge = this.value,
+			reverse_key = this.name;
+
+		while ((k = keys.pop()) !== undefined) {
+			// adjust reverse_key
+			reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+			// push
+			if (k.match(patterns.push)) {
+				merge = self.build([], self.push_counter(reverse_key), merge);
+			}
+
+			// fixed
+			else if (k.match(patterns.fixed)) {
+				merge = self.build([], k, merge);
+			}
+
+			// named
+			else if (k.match(patterns.named)) {
+				merge = self.build({}, k, merge);
+			}
+		}
+
+		json = $.extend(true, json, merge);
+	});
+
+	return json;
+};
+
+function sumit(event){
+	event.preventDefault();
+	var register=$("#form-member-add").toJson();
+	register.id=null;
+	register.visitdate=getNowFormatDate();
+	var now=new Date();
+	if(now.getHours()<12){
+		register.noon="上午";
+	} else{
+		register.noon="下午";
+	}
+	register.visitstate=1;
+	register.registtime=getCurrentTime();
+	$.ajax({
+			type:'POST',
+			url:'register/add',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(register),
+			success:function(data){
+				if(data.status=="OK"){
+					alert("挂号成功！")
+				} else {
+					alert(data.msg);
+				}
+			}
+	})
+}
+
+function guid() {
+    function S4() {
+       return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    }
+    return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+}
+
+function getNowFormatDate() {
+	var date = new Date();
+	var seperator1 = "-";
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = year + seperator1 + month + seperator1 + strDate;
+	return currentdate;
+}
+
+
+/**
+ * 获取当前时间 格式:yyyy-MM-dd HH:MM:SS
+ */
+ function getCurrentTime() {
+    var date = new Date();//当前时间
+    var month = zeroFill(date.getMonth() + 1);//月
+    var day = zeroFill(date.getDate());//日
+    var hour = zeroFill(date.getHours());//时
+    var minute = zeroFill(date.getMinutes());//分
+    var second = zeroFill(date.getSeconds());//秒
+    
+    //当前时间
+    var curTime = date.getFullYear() + "-" + month + "-" + day
+            + " " + hour + ":" + minute + ":" + second;
+    
+    return curTime;
+}
+ 
+/**
+ * 补零
+ */
+function zeroFill(i){
+    if (i >= 0 && i <= 9) {
+        return "0" + i;
+    } else {
+        return i;
+    }
+}
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
