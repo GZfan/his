@@ -35,6 +35,8 @@ public interface RegisterService {
 	
 	public void updateRegister(Register register);
 	
+	public Register getRegisterById(int id);
+	
 	public List<Register> getRegisterByCaseNumber(String caseNumber);
 	
 	public UnchargeItems getUnchargeItems(Integer registID);

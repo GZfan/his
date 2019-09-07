@@ -128,10 +128,27 @@ public class RegisterController {
 	
 	//获取相应病历号的患者的挂号信息
 	@RequestMapping("getbycasenumber")
-	public @ResponseBody ResultDTO<List<Register>> getRegisterById(String caseNumber){
+	public @ResponseBody ResultDTO<List<Register>> getRegisterByCasenumber(String caseNumber){
 		ResultDTO<List<Register>> resultDTO=new ResultDTO<>();
 		try {
 			resultDTO.setData(registerService.getRegisterByCaseNumber(caseNumber));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+			
+		} 
+		return resultDTO;
+	}
+	
+	//根据id获取患者挂号信息
+	@RequestMapping("getbyid")
+	public @ResponseBody ResultDTO<Register> getRegisterById(int id){
+		ResultDTO<Register> resultDTO=new ResultDTO<>();
+		try {
+			resultDTO.setData(registerService.getRegisterById(id));
 			resultDTO.setStatus("OK");
 			resultDTO.setMsg("获取成功！");
 		} catch (Exception e) {

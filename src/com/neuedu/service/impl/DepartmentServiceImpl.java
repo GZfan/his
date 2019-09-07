@@ -53,4 +53,11 @@ public class DepartmentServiceImpl implements DepartmentService{
 		departmentMapper.deleteByExample(example);
 	}
 
+	@Override
+	public Department getDepartmentByName(String name) {
+		DepartmentExample example=new DepartmentExample();
+		example.createCriteria().andDeptnameEqualTo(name);
+		return departmentMapper.selectByExample(example).get(0);
+	}
+
 }

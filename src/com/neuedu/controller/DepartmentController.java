@@ -78,6 +78,21 @@ public class DepartmentController {
 		}
 		return resultDTO;
 	}
+	
+	@RequestMapping("/getbyname")
+	public @ResponseBody ResultDTO<Department> getDepartmentByName(String name) {
+		ResultDTO<Department> resultDTO = new ResultDTO<>();
+		try {
+			resultDTO.setData(service.getDepartmentByName(name));
+			resultDTO.setStatus("OK");
+			resultDTO.setMsg("获取成功！");
+		} catch (Exception e) {
+			e.printStackTrace();
+			resultDTO.setStatus("ERROR");
+			resultDTO.setMsg("获取失败！");
+		}
+		return resultDTO;
+	}
 
 	@RequestMapping("/update")
 	public @ResponseBody ResultDTO<Department> updateDepartment(@RequestBody Department department) {

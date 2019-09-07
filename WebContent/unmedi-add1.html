@@ -30,57 +30,53 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+	<form  class="form form-horizontal" id="fmeditembox">
 
 		<div class="row cl">
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目编码：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="itemcode">
 			</div>
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目名称：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="itemname">
 			</div>
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>规格：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="format">
 			</div>
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>单价：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="price">
 			</div>
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>所属费用分类：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+					<span class="select-box"><select class="select" name="expclassid" id="expclassid">
+					
+					</select></span>
 			</div>
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>执行科室：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<span class="select-box"><select class="select">
-					<option>内科</option>
-					<option>外科</option>
-					<option>骨科</option>
-					<option>儿科</option>
-					<option>妇产科</option>
-					<option>男科</option>
-					<option>五官科</option>
-					<option>传染病科</option>
-					<option>精神心理科</option>
-					<option>康复医学科</option>
-					<option>麻醉医学科</option>
-					<option>皮肤性病科</option>
-					<option>医技科</option>
-					<option>医学影像学</option>
-					<option>营养科</option>
-					<option>中医科</option>
-					<option>肿瘤科</option>
-					<option>其他科</option>
-					<option>空</option>
+				<span class="select-box"><select class="select" name="deptid" id="deptid">
+					
+				</select></span>
+			</div>
+			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>拼音助记码：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="mnemoniccode">
+			</div>
+			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目类型：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+				<span class="select-box"><select class="select" name="recordtype" id="recordtype">
+					<option value="1">检查</option>
+					<option value="2">检验</option>
+					<option value="3">处置</option>
 				</select></span>
 			</div>
 		</div>
 				<div class="row c1">
 			<div class="formControls col-xs-2 col-sm-2">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+				<input class="btn btn-primary radius" type="submit" onclick="submitfme(event)" id="newbox" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
 			</div>
 			<div class="formControls col-xs-2 col-sm-2">
 				<input class="btn btn-primary radius" type="reset" value="&nbsp;&nbsp;清空&nbsp;&nbsp;">
@@ -142,7 +138,147 @@ $(function(){
 			parent.layer.close(index);
 		}
 	});
+
+
+
+
+	$.ajax({
+		type: "get", 
+		url: "expensetype/getallexpensetype",  //提交到的url
+		success: function(data){
+			if(data.status="OK"){
+				expenseclass=data.data;
+				for(var i=0;i<expenseclass.length;i++){
+					$("#expclassid").append("<option value=\""+expenseclass[i].id+"\">"+expenseclass[i].expname+"</option>");
+				}
+			}
+			
+		}
+	})
+
+	$.ajax({
+		type: "get", 
+		url: "department/list",  //提交到的url
+		success: function(data){
+			if(data.status="OK"){
+				department=data.data;
+				for(var i=0;i<department.length;i++){
+					$("#deptid").append("<option value=\""+department[i].id+"\">"+department[i].deptname+"</option>");
+				}
+			}
+			
+		}
+	})
 });
+
+
+function submitfme(event){
+	event.preventDefault();
+	var depart=$("#fmeditembox").toJson();
+	depart.id=null;
+	depart.delmark=1;
+	depart.creationdate=getCurrentTime();
+	$.ajax({
+		type:'POST',
+			url:'fmedicalItems/insert',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(depart),
+			success:function(data){
+				if(data.status=="OK"){
+					alert("插入成功")
+				}else {
+					alert(data.msg);
+				}
+			}
+	})
+}
+function getCurrentTime() {
+    var date = new Date();//当前时间
+    var month = zeroFill(date.getMonth() + 1);//月
+    var day = zeroFill(date.getDate());//日
+    var hour = zeroFill(date.getHours());//时
+    var minute = zeroFill(date.getMinutes());//分
+    var second = zeroFill(date.getSeconds());//秒
+    
+    //当前时间
+    var curTime = date.getFullYear() + "-" + month + "-" + day
+            + " " + hour + ":" + minute + ":" + second;
+    
+    return curTime;
+}
+
+/**
+ * 补零
+ */
+ function zeroFill(i){
+    if (i >= 0 && i <= 9) {
+        return "0" + i;
+    } else {
+        return i;
+    }
+}
+//把表单转换出json对象
+$.fn.toJson = function () {
+	var self = this,
+		json = {},
+		push_counters = {},
+		patterns = {
+			"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+			"key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+			"push": /^$/,
+			"fixed": /^\d+$/,
+			"named": /^[a-zA-Z0-9_]+$/
+		};
+
+	this.build = function (base, key, value) {
+		base[key] = value;
+		return base;
+	};
+
+	this.push_counter = function (key) {
+		if (push_counters[key] === undefined) {
+			push_counters[key] = 0;
+		}
+		return push_counters[key]++;
+	};
+
+	$.each($(this).serializeArray(), function () {
+		// skip invalid keys
+		if (!patterns.validate.test(this.name)) {
+			return;
+		}
+
+		var k,
+			keys = this.name.match(patterns.key),
+			merge = this.value,
+			reverse_key = this.name;
+
+		while ((k = keys.pop()) !== undefined) {
+			// adjust reverse_key
+			reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+			// push
+			if (k.match(patterns.push)) {
+				merge = self.build([], self.push_counter(reverse_key), merge);
+			}
+
+			// fixed
+			else if (k.match(patterns.fixed)) {
+				merge = self.build([], k, merge);
+			}
+
+			// named
+			else if (k.match(patterns.named)) {
+				merge = self.build({}, k, merge);
+			}
+		}
+
+		json = $.extend(true, json, merge);
+	});
+
+	return json;
+};
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

@@ -159,6 +159,7 @@ $(function(){
 					for(var i=0;i<department.length;i++){
 						$("#department").append("<option value=\""+department[i].id+"\">"+department[i].deptname+"</option>");
 					}
+					
 				}else {
 					alert("信息获取失败！");
 				}
@@ -171,36 +172,7 @@ $(function(){
 		increaseArea: '20%'
 	});
 	
-	$("#form-member-add").validate({
-		rules:{
-			username:{
-				required:true,
-			},
-			sex:{
-				required:true,
-			},
-			mobile:{
-				required:true,
-			},
-			email:{
-				required:true,
-				email:true,
-			},
-			uploadfile:{
-				required:true,
-			},
-			
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});
+	
 
 	$("#casenumber").attr("value",guid());
 
@@ -352,7 +324,7 @@ function sumit(event){
 			data:JSON.stringify(register),
 			success:function(data){
 				if(data.status=="OK"){
-					alert("挂号成功！")
+					alert("挂号成功，收取费用"+data.data.money+"元,发票号为："+data.data.invoicenum);
 				} else {
 					alert(data.msg);
 				}

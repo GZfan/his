@@ -132,7 +132,7 @@ public class RegisterServiceImpl implements RegisterService{
 		invoice.setInvoicenum(UUID.randomUUID().toString());
 		Registlevel registlevel=levelMapper.selectByPrimaryKey(register.getRegistleid());
 		BigDecimal price=registlevel.getRegistfee();
-		if("1".equals(register.getIsbook())) {
+		if("是".equals(register.getIsbook())) {
 			price=price.add(new BigDecimal(1));
 		}
 		invoice.setMoney(price);
@@ -785,6 +785,11 @@ public class RegisterServiceImpl implements RegisterService{
 			return userMapper.selectByExample(userExample);
 		}
 		
+	}
+
+	@Override
+	public Register getRegisterById(int id) {
+		return registerMapper.selectByPrimaryKey(id);
 	}
 	
 	

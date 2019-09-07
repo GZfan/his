@@ -30,39 +30,21 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+	<form  class="form form-horizontal" id="searchcondition">
 
 		<div class="row c1">
-			<label class="form-label col-xs-3 col-xs-3"><span class="c-red">*</span>项目编码：</label>
+			<label class="form-label col-xs-2 col-xs-2">项目编码：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="itemcode" name="itemcode">
 			</div>
-			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目名称：</label>
+			<label class="form-label col-xs-2 col-sm-2">项目名称：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="itemname" name="itemname">
 			</div>
-			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>规格：</label>
-			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+			<div class="formControls col-xs-3 col-sm-3">
+				<input class="btn btn-primary radius" type="submit" onclick="makeasearch(event)" value="&nbsp;&nbsp;搜索&nbsp;&nbsp;">
 			</div>
-			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>单价：</label>
-			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
-			</div>
-			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>执行科室：</label>
-			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
-			</div>
-		</div>
-			<div class="row c1">
-			<br />
-			<div class="formControls col-xs-6 col-sm-6">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
-			</div>
-			<div class="formControls col-xs-6 col-sm-6">
-				<input class="btn btn-primary radius" type="reset" value="&nbsp;&nbsp;清空&nbsp;&nbsp;">
-			</div>			
-			<label class="form-label col-xs-5 col-sm-5"></label>
+			
 		</div>
 	</form>
 </article>
@@ -120,6 +102,42 @@ $(function(){
 		}
 	});
 });
+
+
+function makeasearch(event){
+	event.preventDefault();
+	var Fmeditem;
+	Fmeditem.id=null;
+	if($("#itemcode").val()!=""){
+		Fmeditem.itemcode=$("#itemcode").val();
+	}else {
+		Fmeditem.itemcode=null;
+	}
+	if($("#itemname").val()!=""){
+		Fmeditem.itemname=$("#itemname").val();
+	}else {
+		Fmeditem.itemname=null;
+	}
+	Fmeditem.format=null;
+	Fmeditem.price=null;
+	Fmeditem.expclassid=null;
+	Fmeditem.deptid=null;
+	Fmeditem.mnemoniccode=null;
+	Fmeditem.creationdate=null;
+	Fmeditem.lastupdatedate=null;
+	Fmeditem.recordtype=null;
+	Fmeditem.delmark=null;
+	$.ajax({
+			type:'POST',
+			url:'fmedicalItems/getFmedicalItems',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(department),
+			success:function(data){
+				alert(data.msg);
+			}
+	})
+}
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

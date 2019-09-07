@@ -25,32 +25,33 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统信息 <span class="c-gray en">&gt;</span> 科室管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 		<div class="text-c">		
-	 <span class="select-box inline">
-		<select name="" class="select">
-			<option value="0">全部分类</option>
-			<option value="1">分类一</option>
-			<option value="2">分类二</option>
-		</select>
-		</span> 日期范围：
-		<input type="text" onfocus="WdatePicker({ maxDate:'#F{$dp.$D(\'datemax\')||\'%y-%M-%d\'}' })" id="datemin" class="input-text Wdate" style="width:120px;">
-		-
-		<input type="text" onfocus="WdatePicker({ minDate:'#F{$dp.$D(\'datemin\')}',maxDate:'%y-%M-%d' })" id="datemax" class="input-text Wdate" style="width:120px;">
-		<input type="text" class="input-text" style="width:250px" placeholder="输入科室名称" id="" name="">
-		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜科室</button>
+		<input type="text" class="input-text" style="width:250px" placeholder="输入科室名称" id="searchname" name="">
+		<button  class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜科室</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
 		<span class="l">
-			<button class="btn btn-danger radius" onClick="datade1()"><i class="Hui-iconfont">&#xe6e2;</i>批量删除</button>
+			<!--<button class="btn btn-danger radius" onClick="datade1()"><i class="Hui-iconfont">&#xe6e2;</i>批量删除</button> -->
 	        <script>
 	        	function datade1(){
-	        	confirm("确定删除");
+					confirm("确定删除");
+					var chk_value =[];
+					$('input[name="deptcolum"]:checked').each(function(){
+						chk_value.push($(this).val());
+					});
+					$.ajax({
+							type: "get", 
+							url: "department/deletebyid?id="+chk_value[0],  //提交到的url
+							success: function(data){
+								alert(data.msg);
+							}
+					});
 	        	}
 	        </script>
-			<a href="javascript:;" onclick="member_add('新增科室','room-add1.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增科室</a>
-			<a href="javascript:;" onclick="datain()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 导入科室</a>
-			<a href="javascript:;" onclick="revise('修改科室','rivise-room.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 修改科室</a>
+			<a href="javascript:;" onclick="member_add('新增科室','room-add1.html')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增科室</a>
+			<!---<a href="javascript:;" onclick="datain()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 导入科室</a> -->
+			<a href="javascript:;" onclick="change_department()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 修改科室</a>
 			<a href="javascript:;" onclick="datade1()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除科室</a>
-		</span> <span class="r">共有数据：<strong>1</strong> 条</span>
+		
 	</div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
@@ -63,18 +64,72 @@
 				<th width="90">科室类别</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr class="text-c">
-				<td><input type="checkbox" value="1" name=""></td>
-				<td>1</td>
-				<td>骨科1</td>
-				<td>骨科</td>
-				<td>临床</td>
-			</tr>
+		<tbody id="departmentbody">
+			
 		</tbody>
 	</table>
 	</div>
 </div>
+
+<div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content radius">
+			<div class="modal-header">
+				<h3 class="modal-title">编辑</h3>
+				<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+			</div>
+			<div class="modal-body" id="updatedepartment">
+					<form   class="form form-horizontal" id="changebox">
+							<div class="row cl">
+									<label class="form-label col-xs-3 col-sm-3">ID：</label>
+									<div class="formControls col-xs-2 col-sm-2">
+											<input type="text" class="input-text"  readonly unselectable="on"   name="id">
+									</div>
+							</div>
+							<div class="row cl">
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>科室编码：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder=""  name="deptcode">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>科室名称：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder=""  name="deptname">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>科室分类：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<span class="select-box"><select id="constantitem" class="select" name="deptcategoryid">
+									
+									
+								</select></span>
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>科室类别：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<span class="select-box"><select class="select" name="depttype">
+									<option value="1">临床</option>
+									<option value="2">医技</option>
+									<option value="3">财务</option>
+									<option value="4">行政</option>
+									<option value="5">其它</option>
+								</select></span>
+							</div>
+						
+								<div class="row c1">
+							<div class="formControls col-xs-2 col-sm-2">
+								<input class="btn btn-primary radius" type="submit" onclick="updatedepartment(event)"  value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+							</div>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input class="btn btn-primary radius" type="reset" value="&nbsp;&nbsp;清空&nbsp;&nbsp;">
+							</div>			
+							
+							
+					</form>
+					
+			</div>
+			
+		</div>
+	</div>
+</div>
+
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
@@ -87,16 +142,105 @@
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 $(function(){
-	$('.table-sort').dataTable({
-		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-		  {"orderable":false,"aTargets":[0,4]}// 制定列不参与排序
-		]
+	$.ajax({
+			type: "get", 
+			url: "constantitem/getallconstantitem",  //提交到的url
+			success: function(data){
+				if(data.status=="OK"){
+					constantitem=data.data;
+					for(var i=0;i<constantitem.length;i++){
+						$("#constantitem").append("<option value=\""+constantitem[i].id+"\">"+constantitem[i].constantname+"</option>");
+					}
+				}else {
+					alert("常数项获取失败！");
+				}
+			}
+	});
+
+	$("#search").click(function(){
+		var location="department/getbyname?name="+$("#searchname").val();
+		$.ajax({
+			type: "get", 
+			url: location,  
+			success: function(data){
+				if(data.status=="OK"){
+					var department=data.data;
+					addcolum(department);
+				}else {
+					alert("没有符合条件的科室！")
+				}
+			}
+		});
 	});
 	
 });
+
+
+function addcolum(colum){
+	var deptcategory;
+	for(var i=0;i<constantitem.length;i++){
+		if(constantitem[i].id==colum.deptcategoryid){
+			deptcategory=constantitem[i].constantname;
+		}
+	}
+	var depttype;
+	if(colum.depttype==1){
+		depttype="临床";
+	}else if(colum.depttype==2){
+		depttype="医技";
+	} else if(colum.depttype==3){
+		depttype="财务";
+	}
+	else if(colum.depttype==4){
+		depttype="行政";
+	}else {
+		depttype="其他";
+	}
+	var line="<tr class=\"text-c\">"
+	line=line+"<td><input  name=\"deptcolum\" type=\"checkbox\" value=\""+colum.id+"\"></td>"
+	line=line+"	<td>"+colum.deptcode+"</td>"
+	line=line+"<td>"+colum.deptname+"</td>"
+	line=line+"	<td>"+deptcategory+"</td>"
+	line=line+"	<td>"+depttype+"</td></tr>";
+	$("#departmentbody").append(line);
+}
+
+function change_department(){
+	$("#modal-demo").modal("show");
+	var chk_value =[];
+	$('input[name="deptcolum"]:checked').each(function(){
+		chk_value.push($(this).val());
+	});
+	$.ajax({
+			type: "get", 
+			url: "department/getbyid?id="+chk_value[0],  //提交到的url
+			success: function(data){
+				if(data.status=="OK"){
+					$("#changebox").loadData(data.data);
+				}else {
+					alert("数据获取失败！");
+				}
+			}
+	});
+}
+
+
+function updatedepartment(event){
+	event.preventDefault();
+	var department=$("#changebox").toJson();
+	department.delmark=1;
+	$.ajax({
+			type:'POST',
+			url:'department/update',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(department),
+			success:function(data){
+				alert(data.msg);
+			}
+	})
+}
+
 /*用户-添加*/
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
@@ -105,51 +249,13 @@ function member_add(title,url,w,h){
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
-/*用户-停用*/
-function member_stop(obj,id){
-	layer.confirm('确认要停用吗？',function(index){
-		$.ajax({
-			type: 'POST',
-			url: '',
-			dataType: 'json',
-			success: function(data){
-				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_start(this,id)" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe6e1;</i></a>');
-				$(obj).parents("tr").find(".td-status").html('<span class="label label-defaunt radius">已停用</span>');
-				$(obj).remove();
-				layer.msg('已停用!',{icon: 5,time:1000});
-			},
-			error:function(data) {
-				console.log(data.msg);
-			},
-		});		
-	});
-}
 
-/*用户-启用*/
-function member_start(obj,id){
-	layer.confirm('确认要启用吗？',function(index){
-		$.ajax({
-			type: 'POST',
-			url: '',
-			dataType: 'json',
-			success: function(data){
-				$(obj).parents("tr").find(".td-manage").prepend('<a style="text-decoration:none" onClick="member_stop(this,id)" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a>');
-				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
-				$(obj).remove();
-				layer.msg('已启用!',{icon: 6,time:1000});
-			},
-			error:function(data) {
-				console.log(data.msg);
-			},
-		});
-	});
-}
 /*用户-编辑*/
 function member_edit(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
-/*密码-修改*/
-function change_password(title,url,id,w,h){
+/*科室-修改*/
+function revise(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
 /*用户-删除*/
@@ -168,6 +274,106 @@ function member_del(obj,id){
 			},
 		});		
 	});
+}
+
+//把表单转换出json对象
+$.fn.toJson = function () {
+	var self = this,
+		json = {},
+		push_counters = {},
+		patterns = {
+			"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+			"key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+			"push": /^$/,
+			"fixed": /^\d+$/,
+			"named": /^[a-zA-Z0-9_]+$/
+		};
+
+	this.build = function (base, key, value) {
+		base[key] = value;
+		return base;
+	};
+
+	this.push_counter = function (key) {
+		if (push_counters[key] === undefined) {
+			push_counters[key] = 0;
+		}
+		return push_counters[key]++;
+	};
+
+	$.each($(this).serializeArray(), function () {
+		// skip invalid keys
+		if (!patterns.validate.test(this.name)) {
+			return;
+		}
+
+		var k,
+			keys = this.name.match(patterns.key),
+			merge = this.value,
+			reverse_key = this.name;
+
+		while ((k = keys.pop()) !== undefined) {
+			// adjust reverse_key
+			reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+			// push
+			if (k.match(patterns.push)) {
+				merge = self.build([], self.push_counter(reverse_key), merge);
+			}
+
+			// fixed
+			else if (k.match(patterns.fixed)) {
+				merge = self.build([], k, merge);
+			}
+
+			// named
+			else if (k.match(patterns.named)) {
+				merge = self.build({}, k, merge);
+			}
+		}
+
+		json = $.extend(true, json, merge);
+	});
+
+	return json;
+};
+
+//将josn对象赋值给form
+$.fn.loadData = function (obj) {
+	var key, value, tagName, type, arr;
+
+	//this.reset();
+
+	for (var x in obj) {
+		if (obj.hasOwnProperty(x)) {
+			key = x;
+			value = obj[x];
+
+			this.find("[name='" + key + "'],[name='" + key + "[]']").each(function () {
+				tagName = $(this)[0].tagName.toUpperCase();
+				type = $(this).attr('type');
+				if (tagName == 'INPUT') {
+					if (type == 'radio') {
+						if ($(this).val() == value) {
+								$(this).attr('checked', true);
+						}
+					} else if (type == 'checkbox') {
+						arr = value.split(',');
+						for (var i = 0; i < arr.length; i++) {
+							if ($(this).val() == arr[i]) {
+									$(this).attr('checked', true);
+								break;
+							}
+						}
+					} else {
+						$(this).val(value);
+					}
+				} else if (tagName == 'SELECT' || tagName == 'TEXTAREA') {
+					$(this).val(value);
+				}
+			});
+		}
+	}
 }
 </script> 
 </body>

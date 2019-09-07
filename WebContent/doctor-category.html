@@ -25,14 +25,43 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 门诊医生 <span class="c-gray en">&gt;</span> 门诊病历 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <table class="table">
-	<tr>
-		<td width="200" class="va-t"><ul id="treeDemo" class="ztree"></ul></td>
+		<tr>
+		<td align="left" width="165" class="va-t">
+			<label>未诊患者</label>
+			<table class="table">
+				<thead>
+					<tr class="text-c">
+						<th width="25"><input type="checkbox" name="" value=""></th>
+						<th width="100">姓名</th>
+						<th width="40">姓别</th>
+					</tr>
+				</thead>
+				<tbody id="registerlist1">
+						
+				</tbody>
+			</table>
+			<label>已诊患者</label>
+			<table class="table">
+					<thead>
+						<tr class="text-c">
+							<th width="25"><input type="checkbox" name="" value=""></th>
+							<th width="100">姓名</th>
+							<th width="40">姓别</th>
+						</tr>
+					</thead>
+					<tbody id="registerlist2">
+							
+					</tbody>
+				</table>
+				<button class="btn btn-primary" onclick="select(event)">确定</button>
+				
+		</td>
 		<td class="va-t">
-			<iframe ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=390px SRC="system-base.html">
+			<iframe ID="testIframe" Name="testIframe" FRAMEBORDER=0 SCROLLING=AUTO width=100%  height=600px SRC="system-base.html">
 				
 			</iframe>
 		</td>
-	</tr>
+		</tr>
 </table>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
@@ -43,63 +72,73 @@
 <!--使用ztree插件，也可以自行选择其他插件显示 -->
 <script type="text/javascript" src="lib/zTree/v3/js/jquery.ztree.all-3.5.min.js"></script> 
 <script type="text/javascript">
-var setting = {
-	view: {
-		dblClickExpand: false,
-		showLine: false,
-		selectedMulti: false
-	},
-	data: {
-		simpleData: {
-			enable:true,
-			idKey: "id",
-			pIdKey: "pId",
-			rootPId: ""
-		}
-	},
-	callback: {
-		beforeClick: function(treeId, treeNode) {
-			var zTree = $.fn.zTree.getZTreeObj("tree");
-			if (treeNode.isParent) {
-				zTree.expandNode(treeNode);
-				return false;
-			} else {
-				demoIframe.attr("src",treeNode.file + ".html");
-				return true;
-			}
-		}
-	}
-};
 
-var zNodes =[
-	{ id:1, pId:0, name:"一级分类", open:true},
-	{ id:11, pId:1, name:"未诊患者", open:true},
-	{ id:111, pId:11, name:"张三", file:"system-base"},
-	{ id:112, pId:11, name:"李四", file:"system-base"},
-	{ id:113, pId:11, name:"王五", file:"system-base"},
-	{ id:114, pId:11, name:"赵六", file:"system-base"},
-	{ id:115, pId:11, name:"耿七", file:"system-base"},
-	{ id:12, pId:1, name:"已诊患者"},
-	{ id:121, pId:12, name:"张龙", file:"system-base"},
-	{ id:122, pId:12, name:"赵虎", file:"system-base"},
-];
-		
-var code;
-		
-function showCode(str) {
-	if (!code) code = $("#code");
-	code.empty();
-	code.append("<li>"+str+"</li>");
+$(function(){
+	$.ajax({
+			type: "get", 
+			url: "outpatientdoctor/getregistervisited",  //提交到的url
+			success: function(data){
+				if(data.status=="OK"){
+					var registers=data.data;
+					for(var i=0;i<registers.length;i++){
+						$("#registerlist2").append(addregister(registers[i]));
+					}
+				}
+			}
+	})
+	$.ajax({
+			type: "get", 
+			url: "outpatientdoctor/getregisterunvisited",  //提交到的url
+			success: function(data){
+				if(data.status=="OK"){
+					var registers=data.data;
+					for(var i=0;i<registers.length;i++){
+						$("#registerlist1").append(addregister(registers[i]));
+					}
+					
+				}
+			}
+	})
+
+	$(":checkbox").click(function(){
+		$(this).attr("checked",true);
+		$(this).siblings().attr("checked",false); //设置当前选中的checkbox同级(兄弟级)其他checkbox状态为未选中
+	});
+
+
+
+
+
+})
+
+function select(event){
+	event.preventDefault();
+	var chk_value =[];
+	$('input[name="id"]:checked').each(function(){
+		chk_value.push($(this).val());
+	});
+	$("#testIframe")[0].contentWindow.$("#registid").removeAttr("disabled");
+	$("#testIframe")[0].contentWindow.$("#registid").attr("value",chk_value[0]);
+	$("#testIframe")[0].contentWindow.$("#registid").trigger("input");
+	
 }
-		
-$(document).ready(function(){
-	var t = $("#treeDemo");
-	t = $.fn.zTree.init(t, setting, zNodes);
-	demoIframe = $("#testIframe");
-	//demoIframe.on("load", loadReady);
-	var zTree = $.fn.zTree.getZTreeObj("tree");
-	//zTree.selectNode(zTree.getNodeByParam("id",'11'));
-});
+
+
+
+function addregister(colum){
+	var gender;
+	if(colum.gender==71){
+		gender="男";
+	}else {
+		gender="女";
+	}
+	var line="<tr class=\"text-c\">";
+	line=line+"<td><input type=\"checkbox\" "+" value=\""+colum.id+"\" name=\"id\"></td>";
+	line=line+"<td>"+colum.realname+"</td>";				
+	line=line+"<td>"+gender+"</td>";
+	line=line+"</tr>";
+	return line;							
+ }
 </script>
 </body>
 </html>

@@ -28,7 +28,7 @@
 </head>
 <body>
 <div class="page-container">
-	<form class="form form-horizontal" id="form-article-add">
+	<!--<form class="form form-horizontal" id="form-article-add">  -->
 		<div id="tab-system" class="HuiTab">
 			<div class="tabBar cl">
 				<span>病历首页</span>
@@ -38,36 +38,122 @@
 				<span>处置申请</span>
 				<span>成药处方</span>
 				<span>草药处方</span>
-				<span>费用查询</span>
-			</div>
-			<div class="tabCon">				
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">病历：</label>
-				</div>
-				<div class="row cl">
-					<div class="formControls col-xs-8 col-sm-9">
-					 <label class="form-label col-xs-4 col-sm-2">主诉：</label>
-					 <div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  class="input-text" value="" id="" name="">
-					</div>
-				</div>
-				<div class="row cl">
-					<div class="formControls col-xs-8 col-sm-9">
-						<label class="form-label col-xs-4 col-sm-2">现病史：</label>
-						<div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  class="input-text" value="" id="" name="">
-					</div>
-				</div>
-				<div class="row cl">
-					<div class="formControls col-xs-8 col-sm-9">
-						<label class="form-label col-xs-4 col-sm-2">现病治疗情况：</label>
-						<div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  class="input-text" value="" id="" name="">
-					</div>
-				</div>
-					
 			</div>
 			<div class="tabCon">
+					<form   class="form form-horizontal" id="medicalrecord">				
+					<div class="row cl">
+						<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">id：</label>
+								<div class="formControls col-xs-4 col-sm-2">
+										<input type="text" disabled="disabled"  class="input-text"  value="" id="Mid" name="id">
+								</div>
+							<label class="form-label col-xs-4 col-sm-2">病历号：</label>
+							<div class="formControls col-xs-4 col-sm-2">
+									<input type="text"  class="input-text"  value="" id="casenumber" name="casenumber">
+							</div>
+							<label class="form-label col-xs-4 col-sm-2">挂号id：</label>
+							<div class="formControls col-xs-4 col-sm-2">
+									<input type="text"  class="input-text"  value="" id="registid" name="registid">
+							</div>
+						</div>
+					</div>
+					<div class="row cl">
+						<div class="formControls col-xs-8 col-sm-9">
+							 <label class="form-label col-xs-4 col-sm-2">主诉：</label>
+							 <div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="readme">
+							</div>
+						</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">现病史：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="present">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">现病治疗情况：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="presenttreat">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">既往史：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="history">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">过敏史：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="allergy">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">体格检查：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="physique">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">检查建议：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="proposal">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">注意事项：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="careful">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">检查结果：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="checkresult">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">诊断结果：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="diagnosis">
+								</div>
+							</div>
+					</div>
+					<div class="row cl">
+							<div class="formControls col-xs-8 col-sm-9">
+								<label class="form-label col-xs-4 col-sm-2">处理意见：</label>
+								<div class="formControls col-xs-8 col-sm-9">
+								<input type="text"  class="input-text" value="" id="" name="handling">
+								</div>
+							</div>
+					</div>
+					<a href="javascript:;" onclick="submitMedicalRecord(1)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 暂存</a>
+					<a href="javascript:;" onclick="submitMedicalRecord(2)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 提交</a>
+					</form>
+			</div>
+			<div class="tabCon">
+					<a href="javascript:;" onclick="inspectsearch()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增项目</a>
+					<a href="javascript:;" onclick="datain()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 存为组套</a>
+					<a href="javascript:;" onclick="revise()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 引用组套</a>
+					<a href="javascript:;" onclick="datade1()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除项目</a>
 				<div class="row cl">
 					<div class="formControls col-xs-8 col-sm-9" >
 						<table class="table table-border table-bordered table-bg table-hover table-sort table-responsive" id="CheckApply">
@@ -94,7 +180,7 @@
 			<div class="tabCon">
 				<div class="row cl">
 					<div class="formControls col-xs-8 col-sm-9" >
-						
+							<input type="text"  class="input-text" value="" id="" name="">
 					</div>
 				</div>				
 			</div>
@@ -132,24 +218,19 @@
 			</div>
 			
 			</div>
-		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<button onClick="article_save_submit();" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存</button>
-				<button onClick="layer_close();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
 			</div>
-		</div>
-	</form>
+		
+	<!--</form> -->
 </div>
 
 <div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content radius">
 			<div class="modal-header">
-				<h3 class="modal-title">编辑</h3>
+				<h3 class="modal-title">搜索</h3>
 				<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
 			</div>
-			<div class="modal-body" id="updateCheckApply">
+			<div class="modal-body" id="getCheckApply">
 				
 			</div>
 			<div class="modal-footer">
@@ -159,6 +240,40 @@
 		</div>
 	</div>
 </div>
+
+<div id="inspect-add" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content radius">
+				<div class="modal-header">
+					<h3 class="modal-title">搜索</h3>
+					<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+				</div>
+				<div class="modal-body" id="updateCheckApply">
+						<form  class="form form-horizontal" id="searchcondition">
+
+								<div class="row c1">
+									<label class="form-label col-xs-2 col-xs-2">项目编码：</label>
+									<div class="formControls col-xs-2 col-sm-2">
+										<input type="text" class="input-text" value="" placeholder="" id="itemcode" name="itemcode">
+									</div>
+									<label class="form-label col-xs-2 col-sm-2">项目名称：</label>
+									<div class="formControls col-xs-2 col-sm-2">
+										<input type="text" class="input-text" value="" placeholder="" id="itemname" name="itemname">
+									</div>
+									<div class="formControls col-xs-3 col-sm-3">
+										<input class="btn btn-primary radius" type="submit" onclick="makeasearch(event)" value="&nbsp;&nbsp;搜索&nbsp;&nbsp;">
+									</div>
+									
+								</div>
+							</form>
+				</div>
+				<div class="modal-footer">
+					<button class="btn btn-primary" id="saveCheckApply">确定</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true" >关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
@@ -174,6 +289,39 @@
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 $(function(){
+	$("#registid").bind("input propertychange",function (){
+		$("#casenumber").removeAttr("disabled");
+		$("#registid").removeAttr("disabled");
+		$.ajax({
+			type: "get", 
+			url: "register/getbyid?id="+$("#registid").val(),  //提交到的url
+			success: function(data){
+				if(data.status=="OK"){
+					register=data.data;
+					$("#casenumber").attr("value",register.casenumber);
+					
+				}
+			}
+		})
+		$.ajax({
+			type: "get", 
+			url: "outpatientdoctor/getmedicalrecordbyregistid?registID="+$("#registid").val(),  //提交到的url
+			success: function(data){
+				if(data.status=="OK"){
+					var medicalrecord=data.data;
+					if(medicalrecord!=null){
+						$("#Mid").removeAttr("disabled");
+						$("#medicalrecord").loadData(medicalrecord);
+					}
+					
+				}
+			}
+		})
+		$("#Mid").attr("disabled","disabled");
+		$("#casenumber").attr("disabled","disabled");
+		$("#registid").attr("disabled","disabled");
+	})
+
 	$('.skin-minimal input').iCheck({
 		checkboxClass: 'icheckbox-blue',
 		radioClass: 'iradio-blue',
@@ -182,98 +330,9 @@ $(function(){
 	$("#tab-system").Huitab({
 		index:0
 	});
-	//显示所有CheckApply
-	$("#loadCheckApply").click(function(){
-		$.ajax({
-			url:"listCheckApply",
-			type:"get",
-			async:true,
-			dataType:"json",
-			success:function(data){
-				data.forEach(function(item,index){
-					var identification="CheckApply"+item.id.toString();
-					var t="<tbody id="+identification+"><tr class=\"text-c\"><td><input type=\"checkbox\" value=\"\" name=\"\"></td>";
-					t=t+"<td>"+item.name+"</td>";
-					t=t+"<td class=\"text-l\">"+item.objective+"</td>";
-					t=t+"<td>"+item.position+"</td>";
-					t=t+"<td>"+item.isurgent+"</td>";
-					t=t+"<td>"+item.num+"</td>";
-					t=t+"<td>"+item.creationtime+"</td>";
-					t=t+"<td>"+item.doctorid+"</td>";
-					t=t+"<td>"+item.state+"</td>"
-					t=t+"<td>"+item.recordtype+"</td>"
-					t+="<td class=\"f-14 td-manage\">";
-					t+="<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"modaldemo("+item.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>";
-					t+="<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"article_del(this,"+item.id+")\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
-					t+="</td></tr></tbody>";
-					$("#CheckApply").append(t);
-				})
-			}
-			
-		});	
-	});
-	//编辑后保存操作
-	$("#saveCheckApply").click(function(){
-		var json={};
-		var tempId=$("#CheckApplyid").html();
-		temId=parseInt(tempId);
-		json.id=parseInt(tempId);
-		json.medicalid=null;
-		json.registid=null;
-		json.itemid=null;
-		json.name=$("#CheckApplyname").val();
-		json.objective=$("#CheckApplyobjective").val();
-		json.position=$("#CheckApplyposition").val();
-		var isUrgent=$("#CheckApplyisUrgent").val();
-		json.isurgent=parseInt(isUrgent);
-		var num=$("#CheckApplynum").val();
-		json.num=parseInt(num);
-		json.creationtime=null;
-		json.doctorid=null;
-		json.checkoperid=null;
-		json.resultoperid=null;
-		json.checktime=null;
-		json.result=null;
-		json.resulttime=null;
-		json.state=null;
-		json.recordtype=null;
-		$.ajax({
-			type:'POST',
-			async:false,
-			url:'updateCheckApply',
-			contentType:"application/json",
-			dataType:'json',
-			data:JSON.stringify(json),
-			success:function(data){
-				tempId="#CheckApply"+tempId.toString();
-				$(tempId).remove();
-				$.ajax({
-						url:"getCheckApplyById?id="+json.id,
-						type:"get",
-						async:false,
-						dataType:"json",
-						success:function(data){
-							var t="<tbody id="+data.id+"><tr class=\"text-c\"><td><input type=\"checkbox\" value=\"\" name=\"\"></td>";
-							t=t+"<td>"+data.name+"</td>";
-							t=t+"<td class=\"text-l\">"+data.objective+"</td>";
-							t=t+"<td>"+data.position+"</td>";
-							t=t+"<td>"+data.isurgent+"</td>";
-							t=t+"<td>"+data.num+"</td>";
-							t=t+"<td>"+data.creationtime+"</td>";
-							t=t+"<td>"+data.doctorid+"</td>";
-							t=t+"<td>"+data.state+"</td>"
-							t=t+"<td>"+data.recordtype+"</td>"
-							t+="<td class=\"f-14 td-manage\">";
-							t+="<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"modaldemo("+data.id+")\" href=\"javascript:;\" title=\"编辑\"><i class=\"Hui-iconfont\">&#xe6df;</i></a>";
-							t+="<a style=\"text-decoration:none\" class=\"ml-5\" onClick=\"article_del(this,\'10001\')\" href=\"javascript:;\" title=\"删除\"><i class=\"Hui-iconfont\">&#xe6e2;</i></a>";
-							t+="</td></tr></tbody>";
-							$("#CheckApply").append(t);
-						}
-			})
-			}
-		});
-		$("#modal-demo").modal("hide");
-	});
+	
+	
+	
 });
 //CheckApply编辑框
 function modaldemo(id){
@@ -329,6 +388,155 @@ function modaldemo(id){
 }
 
 
+function inspectsearch(){
+	$("#inspect-add").modal("show")
+}
+
+/*用户-添加*/
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+function submitMedicalRecord(num){
+	$("#Mid").removeAttr("disabled");
+	$("#casenumber").removeAttr("disabled");
+	$("#registid").removeAttr("disabled");
+	var medicalrecord=$("#medicalrecord").toJson();
+	medicalrecord.casestate=num;
+	if(medicalrecord.id==""){
+		$.ajax({
+			type:'POST',
+			url:'outpatientdoctor/insertmedicalrecord',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(medicalrecord),
+			success:function(data){
+				if(data.status=="OK"){
+					alert("插入成功");
+				} else {
+					alert(data.msg);
+				}
+			}
+	})
+	}else {
+		$.ajax({
+			type:'POST',
+			url:'outpatientdoctor/updatemedicalrecord',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(medicalrecord),
+			success:function(data){
+				if(data.status=="OK"){
+					alert("更新成功");
+				} else {
+					alert(data.msg);
+				}
+			}
+	})
+	}
+}
+
+
+
+
+//将josn对象赋值给form
+$.fn.loadData = function (obj) {
+	var key, value, tagName, type, arr;
+
+	
+
+	for (var x in obj) {
+		if (obj.hasOwnProperty(x)) {
+			key = x;
+			value = obj[x];
+
+			this.find("[name='" + key + "'],[name='" + key + "[]']").each(function () {
+				tagName = $(this)[0].tagName.toUpperCase();
+				type = $(this).attr('type');
+				if (tagName == 'INPUT') {
+					if (type == 'radio') {
+						if ($(this).val() == value) {
+								$(this).attr('checked', true);
+						}
+					} else if (type == 'checkbox') {
+						arr = value.split(',');
+						for (var i = 0; i < arr.length; i++) {
+							if ($(this).val() == arr[i]) {
+									$(this).attr('checked', true);
+								break;
+							}
+						}
+					} else {
+						$(this).val(value);
+					}
+				} else if (tagName == 'SELECT' || tagName == 'TEXTAREA') {
+					$(this).val(value);
+				}
+			});
+		}
+	}
+}
+
+//把表单转换出json对象
+$.fn.toJson = function () {
+	var self = this,
+		json = {},
+		push_counters = {},
+		patterns = {
+			"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+			"key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+			"push": /^$/,
+			"fixed": /^\d+$/,
+			"named": /^[a-zA-Z0-9_]+$/
+		};
+
+	this.build = function (base, key, value) {
+		base[key] = value;
+		return base;
+	};
+
+	this.push_counter = function (key) {
+		if (push_counters[key] === undefined) {
+			push_counters[key] = 0;
+		}
+		return push_counters[key]++;
+	};
+
+	$.each($(this).serializeArray(), function () {
+		// skip invalid keys
+		if (!patterns.validate.test(this.name)) {
+			return;
+		}
+
+		var k,
+			keys = this.name.match(patterns.key),
+			merge = this.value,
+			reverse_key = this.name;
+
+		while ((k = keys.pop()) !== undefined) {
+			// adjust reverse_key
+			reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+			// push
+			if (k.match(patterns.push)) {
+				merge = self.build([], self.push_counter(reverse_key), merge);
+			}
+
+			// fixed
+			else if (k.match(patterns.fixed)) {
+				merge = self.build([], k, merge);
+			}
+
+			// named
+			else if (k.match(patterns.named)) {
+				merge = self.build({}, k, merge);
+			}
+		}
+
+		json = $.extend(true, json, merge);
+	});
+
+	return json;
+};
 
 /*删除*/
 function article_del(obj,index){

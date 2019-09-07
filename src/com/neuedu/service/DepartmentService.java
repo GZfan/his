@@ -13,6 +13,8 @@ public interface DepartmentService {
 	
 	public void addDepartment(Department department);
 	
+	public Department getDepartmentByName(String name);
+	
 	public void deleteDepartment(Integer id);
 	
 	public Department getDepartment(Integer id);
