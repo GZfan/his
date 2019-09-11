@@ -17,7 +17,6 @@ public class DiseaseServiceImpl implements DiseaseService{
 	
 	@Override
 	public Integer insert(Disease disease) {
-		// TODO Auto-generated method stub
 		diseaseMapper.insert(disease);
 		Integer num=(int)diseaseMapper.countByExample(null);
 		disease.setId(num);
@@ -26,8 +25,6 @@ public class DiseaseServiceImpl implements DiseaseService{
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		//diseaseMapper.deleteByPrimaryKey(id);
 		Disease disease=diseaseMapper.selectByPrimaryKey(id);
 		disease.setDelmark(0);
 		diseaseMapper.updateByPrimaryKeySelective(disease);
@@ -35,31 +32,38 @@ public class DiseaseServiceImpl implements DiseaseService{
 
 	@Override
 	public void update(Disease disease) {
-		// TODO Auto-generated method stub
 		diseaseMapper.updateByPrimaryKey(disease);
 	}
 
 	@Override
 	public Disease getDiseaseById(Integer id) {
-		// TODO Auto-generated method stub
 		return diseaseMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
 	public List<Disease> getAllDisease() {
-		// TODO Auto-generated method stub
 		DiseaseExample diseaseExample = new DiseaseExample();
+		diseaseExample.createCriteria().andDelmarkEqualTo(1);
         return diseaseMapper.selectByExample(diseaseExample);
 	}
 
 	@Override
-	public List<Disease> getDisease(Disease disease) {
-		// TODO Auto-generated method stub
+	public List<Disease> getDisease(String name) {
 		DiseaseExample diseaseExample = new DiseaseExample();
 		DiseaseExample.Criteria criteria=diseaseExample.createCriteria();
-		criteria.andDiseasecodeEqualTo(disease.getDiseasecode());
-		criteria.andDiseasenameEqualTo(disease.getDiseasename());
+		criteria.andDiseasenameLike("%"+name+"%");
+		criteria.andDelmarkEqualTo(1);
 		return diseaseMapper.selectByExample(diseaseExample);
+	}
+
+	@Override
+	public void deleteByIds(List<Integer> ids) {
+		DiseaseExample diseaseExample = new DiseaseExample();
+		DiseaseExample.Criteria criteria=diseaseExample.createCriteria();
+		criteria.andIdIn(ids);
+		Disease disease=new Disease();
+		disease.setDelmark(0);
+		diseaseMapper.updateByExampleSelective(disease, diseaseExample);
 	}
 
 }

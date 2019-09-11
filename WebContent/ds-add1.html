@@ -30,21 +30,28 @@
 </head>
 <body>
 <article class="page-container">
-	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+	<form  class="form form-horizontal" id="form-member-add">
 
 		<div class="row cl">
 			<label class="form-label col-xs-3 col-xs-3"><span class="c-red">*</span>疾病分类编码：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="dicacode">
 			</div>
 			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>疾病分类名称：</label>
 			<div class="formControls col-xs-2 col-sm-2">
-				<input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+				<input type="text" class="input-text" value="" placeholder="" id="username" name="dicaname">
 			</div>
+			<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>疾病类型：</label>
+			<div class="formControls col-xs-2 col-sm-2">
+					<span class="select-box"><select class="select" name="dicatype">
+						<option value="1">西医</option>
+						<option value="2">中医</option>
+					</select></span>
+				</div>
 		</div>
 				<div class="row c1">
 			<div class="formControls col-xs-5 col-sm-5">
-				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+				<input class="btn btn-primary radius" type="submit"onclick="submitds(event)"  value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
 			</div>
 			<div class="formControls col-xs-5 col-sm-5">
 				<input class="btn btn-primary radius" type="reset" value="&nbsp;&nbsp;清空&nbsp;&nbsp;">
@@ -67,46 +74,92 @@
 <script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
 $(function(){
-	$('.skin-minimal input').iCheck({
-		checkboxClass: 'icheckbox-blue',
-		radioClass: 'iradio-blue',
-		increaseArea: '20%'
-	});
 	
-	$("#form-member-add").validate({
-		rules:{
-			username:{
-				required:true,
-				minlength:2,
-				maxlength:16
-			},
-			sex:{
-				required:true,
-			},
-			mobile:{
-				required:true,
-				isMobile:true,
-			},
-			email:{
-				required:true,
-				email:true,
-			},
-			uploadfile:{
-				required:true,
-			},
-			
-		},
-		onkeyup:false,
-		focusCleanup:true,
-		success:"valid",
-		submitHandler:function(form){
-			//$(form).ajaxSubmit();
-			var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			parent.layer.close(index);
-		}
-	});
 });
+
+function submitds(event){
+	event.preventDefault();
+	var diseasetype=$("#form-member-add").toJson();
+	diseasetype.id=null;
+	diseasetype.delmark=1;
+	diseasetype.sequenceno=null;
+	$.ajax({
+		type:'POST',
+			url:'diseaseType/insert',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(diseasetype),
+			success:function(data){
+				if(data.status=="OK"){
+					alert("插入成功")
+				}else {
+					alert(data.msg);
+				}
+			}
+	})
+}
+
+//把表单转换出json对象
+$.fn.toJson = function () {
+	var self = this,
+		json = {},
+		push_counters = {},
+		patterns = {
+			"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+			"key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+			"push": /^$/,
+			"fixed": /^\d+$/,
+			"named": /^[a-zA-Z0-9_]+$/
+		};
+
+	this.build = function (base, key, value) {
+		base[key] = value;
+		return base;
+	};
+
+	this.push_counter = function (key) {
+		if (push_counters[key] === undefined) {
+			push_counters[key] = 0;
+		}
+		return push_counters[key]++;
+	};
+
+	$.each($(this).serializeArray(), function () {
+		// skip invalid keys
+		if (!patterns.validate.test(this.name)) {
+			return;
+		}
+
+		var k,
+			keys = this.name.match(patterns.key),
+			merge = this.value,
+			reverse_key = this.name;
+
+		while ((k = keys.pop()) !== undefined) {
+			// adjust reverse_key
+			reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+			// push
+			if (k.match(patterns.push)) {
+				merge = self.build([], self.push_counter(reverse_key), merge);
+			}
+
+			// fixed
+			else if (k.match(patterns.fixed)) {
+				merge = self.build([], k, merge);
+			}
+
+			// named
+			else if (k.match(patterns.named)) {
+				merge = self.build({}, k, merge);
+			}
+		}
+
+		json = $.extend(true, json, merge);
+	});
+
+	return json;
+};
 </script> 
 <!--/请在上方写此页面业务相关的脚本-->
 </body>

@@ -61,6 +61,23 @@ public class DiseaseController {
         return resultDTO;
     }
 	
+	//批量删除疾病
+	@ResponseBody
+    @RequestMapping("/deletelist")
+    public ResultDTO<Disease> deletelist(@RequestBody List<Integer> ids){
+        ResultDTO resultDTO = new ResultDTO();
+        try {
+            diseaseService.deleteByIds(ids);
+            resultDTO.setStatus("OK");
+            resultDTO.setMsg("删除疾病成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultDTO.setStatus("ERROR");
+            resultDTO.setMsg("删除疾病失败！");
+        }
+        return resultDTO;
+    }
+	
 	//更新疾病
 	@ResponseBody
     @RequestMapping("/update")
@@ -112,13 +129,13 @@ public class DiseaseController {
         return resultDTO;
     }
 	
-	//精确查询
+	//疾病名称模糊查询
 	@ResponseBody
     @RequestMapping("/getDisease")
-    public ResultDTO<Disease> getDisease(@RequestBody Disease disease){
+    public ResultDTO<Disease> getDisease(String name){
         ResultDTO resultDTO = new ResultDTO();
         try {
-            resultDTO.setData(diseaseService.getDisease(disease));
+            resultDTO.setData(diseaseService.getDisease(name));
             resultDTO.setStatus("OK");
             resultDTO.setMsg("展示疾病成功！");
         } catch (Exception e) {

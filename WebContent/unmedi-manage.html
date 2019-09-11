@@ -27,25 +27,39 @@
 		<div class="text-c">
 		<div  class="row cl">
 		<label >项目编码：</label>		
-		<input type="text" class="input-text" style="width:250px"  id="" name="">
+		<input type="text" class="input-text" style="width:250px"  id="itemcode" name="">
 		</div>
 		<div  class="row cl">
 		<label >项目名称：</label>
-		<input type="text" class="input-text" style="width:250px"  id="" name="">
+		<input type="text" class="input-text" style="width:250px"  id="itemname" name="">
 		</div>
-		<button type="submit" class="btn btn-success radius" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		<button type="submit" class="btn btn-success radius" id="search" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	</div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
 		<span class="l">
 			
 	        <script>
 	        	function datade1(){
-	        	confirm("确定删除");
+				confirm("确定删除");
+				var chk_value =[];
+				$('input[name="umeditemcolum"]:checked').each(function(){
+					chk_value.push($(this).val());
+				});
+				$.ajax({
+						type: "post", 
+						url: "fmedicalItems/deletelist",  
+						contentType:"application/json",
+						dataType:'json',
+						data:JSON.stringify(chk_value), 
+						success: function(data){
+							alert(data.msg);
+						}
+				});
 	        	}
 	        </script>
 			<a href="javascript:;" onclick="member_add('新增非药品收费项目','unmedi-add1.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新增非药品收费项目</a>
 			
-			<a href="javascript:;" onclick="revise('修改非药品收费项目','rivise-unmedi.html','','510')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 修改非药品收费项目</a>
+			<a href="javascript:;" onclick="change_fme()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 修改非药品收费项目</a>
 			<a href="javascript:;" onclick="datade1()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除非药品收费项目</a>
 		
 	</div>
@@ -62,18 +76,79 @@
 				<th width="90">执行科室</th>
 			</tr>
 		</thead>
-		<tbody>
-			<tr class="text-c">
-				<td><input type="checkbox" value="1" name=""></td>
-				<td>1</td>
-				<td>b项</td>
-				<td>小</td>
-				<td>2000</td>
-				<td>b类</td>
-				<td>骨科</td>
-			</tr>
+		<tbody id="fmeditembody">
+			
 		</tbody>
 	</table>
+	</div>
+</div>
+
+
+<div id="modal-demo" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content radius">
+			<div class="modal-header">
+				<h3 class="modal-title">编辑</h3>
+				<a class="close" data-dismiss="modal" aria-hidden="true" href="javascript:void();">×</a>
+			</div>
+			<div class="modal-body" id="updatedepartment">
+					<form   class="form form-horizontal" id="changebox">
+						<div class="row cl">
+							<label class="form-label col-xs-3 col-sm-3">id：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder="" id="uid" name="id">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目编码：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder=""  name="itemcode">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目名称：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder=""  name="itemname">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>规格：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder=""  name="format">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>单价：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder="" name="price">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>所属费用分类：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+									<span class="select-box"><select class="select" name="expclassid" id="expclassid">
+									
+									</select></span>
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>执行科室：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<span class="select-box"><select class="select" name="deptid" id="deptid">
+									
+								</select></span>
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>拼音助记码：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input type="text" class="input-text" value="" placeholder="" id="username" name="mnemoniccode">
+							</div>
+							<label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>项目类型：</label>
+							<div class="formControls col-xs-2 col-sm-2">
+								<span class="select-box"><select class="select" name="recordtype" id="recordtype">
+									<option value="1">检查</option>
+									<option value="2">检验</option>
+									<option value="3">处置</option>
+								</select></span>
+							</div>
+							<div class="formControls col-xs-2 col-sm-2">
+								<input class="btn btn-primary radius" type="submit" onclick="submitfme(event)" id="newbox" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+							</div>
+						</div>
+							
+							
+					</form>
+					
+			</div>
+			
+		</div>
 	</div>
 </div>
 <!--_footer 作为公共模版分离出去-->
@@ -88,16 +163,186 @@
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script>
 <script type="text/javascript">
 $(function(){
-	$('.table-sort').dataTable({
-		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
-		"bStateSave": true,//状态保存
-		"aoColumnDefs": [
-		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
-		  {"orderable":false,"aTargets":[0,6]}// 制定列不参与排序
-		]
-	});
+	$("#uid").attr("disabled","disabled");
 	
+	//获取费用科目表信息
+	$.ajax({
+		type: "get", 
+		url: "expensetype/getallexpensetype",  
+		success: function(data){
+			if(data.status="OK"){
+				$("#expclassid").empty();
+				expenseclass=data.data;
+				for(var i=0;i<expenseclass.length;i++){
+					$("#expclassid").append("<option value=\""+expenseclass[i].id+"\">"+expenseclass[i].expname+"</option>");
+				}
+				
+			}
+			
+		}
+	})
+	//获取科室表信息
+	$.ajax({
+		type: "get", 
+		url: "department/list",  
+		success: function(data){
+			if(data.status="OK"){
+				$("#deptid").empty();
+				department=data.data;
+				for(var i=0;i<department.length;i++){
+					$("#deptid").append("<option value=\""+department[i].id+"\">"+department[i].deptname+"</option>");
+				}
+				
+			}
+			
+		}
+	})
+	
+	$("#search").click(function(){
+		var fmeditem={};
+		if($("#itemcode").val()==""){
+			fmeditem.itemcode=null;
+		}else {
+			fmeditem.itemcode=$("#itemcode").val();
+		}
+		if($("#itemname").val()==""){
+			fmeditem.itemname=null;
+		}else {
+			fmeditem.itemname=$("#itemname").val();
+		}
+		fmeditem.id=null;
+		fmeditem.format=null;
+		fmeditem.price=null;
+		fmeditem.expclassid=null;
+		fmeditem.mnemoniccode=null;
+		fmeditem.deptid=null;
+		fmeditem.creationdate=null;
+		fmeditem.lastupdatedate=null;
+		fmeditem.recordtype=null;
+		fmeditem.delmark=null;
+		var location="fmedicalItems/getFmedicalItems";
+		$.ajax({
+			type: "post", 
+			url: location, 
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(fmeditem), 
+			success: function(data){
+				if(data.status=="OK"){
+					items=data.data;
+					$("#fmeditembody").empty();
+					for(var i=0;i<items.length;i++){
+						addline(items[i]);
+					}
+				}else {
+					alert("没有符合条件的非药品收费项目！")
+				}
+			}
+		});
+	});
 });
+
+
+function addline(colum){
+	var expclass,dept;
+	for(var i=0;i<expenseclass.length;i++){
+		if(expenseclass[i].id==colum.expclassid){
+			expclass=expenseclass[i].expname;
+		}
+	}
+	for(var i=0;i<department.length;i++){
+		if(department[i].id==colum.deptid){
+			dept=department[i].deptname;
+		}
+	}
+	var line="<tr class=\"text-c\">"
+	line=line+"<td><input  name=\"umeditemcolum\" type=\"checkbox\" value=\""+colum.id+"\"></td>"
+	line=line+"	<td>"+colum.itemcode+"</td>"
+	line=line+"<td>"+colum.itemname+"</td>"
+	line=line+"	<td>"+colum.format+"</td>"
+	line=line+"	<td>"+colum.price+"</td>"
+	line=line+"	<td>"+expclass+"</td>"
+	line=line+"	<td>"+dept+"</td></tr>";
+	$("#fmeditembody").append(line);
+}
+
+function change_fme(){
+	var chk_value =[];
+	$('input[name="umeditemcolum"]:checked').each(function(){
+		chk_value.push($(this).val());
+	});
+	if(chk_value.length>1){
+		alert("每次只能修改一个项目");
+	}else {
+		$("#modal-demo").modal("show");
+		$.ajax({
+			type: "get", 
+			url: "fmedicalItems/getFmedicalItemsById?id="+chk_value[0], 
+			success: function(data){
+				if(data.status=="OK"){
+					$("#uid").removeAttr("disabled");
+					$("#changebox").loadData(data.data);
+					$("#uid").attr("disabled","disabled");
+				}else {
+					alert("数据获取失败！");
+				}
+			}
+		});
+	}
+	
+}
+
+function submitfme(event){
+	event.preventDefault();
+	$("#uid").removeAttr("disabled");
+	var item=$("#changebox").toJson();
+	item.creationdate=null;
+	item.delmark=1;
+	item.lastupdatedate=getCurrentTime();
+	$("#uid").attr("disabled","disabled");
+	$("#modal-demo").modal("hide");
+	$.ajax({
+			type:'POST',
+			url:'fmedicalItems/update',
+			contentType:"application/json",
+			dataType:'json',
+			data:JSON.stringify(item),
+			success:function(data){
+				alert(data.msg);
+			}
+	})
+}
+
+
+/**
+ * 获取当前时间 格式:yyyy-MM-dd HH:MM:SS
+ */
+ function getCurrentTime() {
+    var date = new Date();//当前时间
+    var month = zeroFill(date.getMonth() + 1);//月
+    var day = zeroFill(date.getDate());//日
+    var hour = zeroFill(date.getHours());//时
+    var minute = zeroFill(date.getMinutes());//分
+    var second = zeroFill(date.getSeconds());//秒
+    
+    //当前时间
+    var curTime = date.getFullYear() + "-" + month + "-" + day
+            + " " + hour + ":" + minute + ":" + second;
+    
+    return curTime;
+}
+ 
+/**
+ * 补零
+ */
+function zeroFill(i){
+    if (i >= 0 && i <= 9) {
+        return "0" + i;
+    } else {
+        return i;
+    }
+}
+
 /*用户-添加*/
 function member_add(title,url,w,h){
 	layer_show(title,url,w,h);
@@ -106,7 +351,104 @@ function member_add(title,url,w,h){
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
+//把表单转换出json对象
+$.fn.toJson = function () {
+	var self = this,
+		json = {},
+		push_counters = {},
+		patterns = {
+			"validate": /^[a-zA-Z][a-zA-Z0-9_]*(?:\[(?:\d*|[a-zA-Z0-9_]+)\])*$/,
+			"key": /[a-zA-Z0-9_]+|(?=\[\])/g,
+			"push": /^$/,
+			"fixed": /^\d+$/,
+			"named": /^[a-zA-Z0-9_]+$/
+		};
 
+	this.build = function (base, key, value) {
+		base[key] = value;
+		return base;
+	};
+
+	this.push_counter = function (key) {
+		if (push_counters[key] === undefined) {
+			push_counters[key] = 0;
+		}
+		return push_counters[key]++;
+	};
+
+	$.each($(this).serializeArray(), function () {
+		// skip invalid keys
+		if (!patterns.validate.test(this.name)) {
+			return;
+		}
+
+		var k,
+			keys = this.name.match(patterns.key),
+			merge = this.value,
+			reverse_key = this.name;
+
+		while ((k = keys.pop()) !== undefined) {
+			// adjust reverse_key
+			reverse_key = reverse_key.replace(new RegExp("\\[" + k + "\\]$"), '');
+
+			// push
+			if (k.match(patterns.push)) {
+				merge = self.build([], self.push_counter(reverse_key), merge);
+			}
+
+			// fixed
+			else if (k.match(patterns.fixed)) {
+				merge = self.build([], k, merge);
+			}
+
+			// named
+			else if (k.match(patterns.named)) {
+				merge = self.build({}, k, merge);
+			}
+		}
+
+		json = $.extend(true, json, merge);
+	});
+
+	return json;
+};
+//将josn对象赋值给form
+$.fn.loadData = function (obj) {
+	var key, value, tagName, type, arr;
+
+	//this.reset();
+
+	for (var x in obj) {
+		if (obj.hasOwnProperty(x)) {
+			key = x;
+			value = obj[x];
+
+			this.find("[name='" + key + "'],[name='" + key + "[]']").each(function () {
+				tagName = $(this)[0].tagName.toUpperCase();
+				type = $(this).attr('type');
+				if (tagName == 'INPUT') {
+					if (type == 'radio') {
+						if ($(this).val() == value) {
+								$(this).attr('checked', true);
+						}
+					} else if (type == 'checkbox') {
+						arr = value.split(',');
+						for (var i = 0; i < arr.length; i++) {
+							if ($(this).val() == arr[i]) {
+									$(this).attr('checked', true);
+								break;
+							}
+						}
+					} else {
+						$(this).val(value);
+					}
+				} else if (tagName == 'SELECT' || tagName == 'TEXTAREA') {
+					$(this).val(value);
+				}
+			});
+		}
+	}
+}
 </script> 
 </body>
 </html>

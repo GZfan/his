@@ -26,7 +26,6 @@ public class FmedicalItemsController {
 	@ResponseBody
     @RequestMapping("/insert")
     public ResultDTO<Fmeditem> insert(@RequestBody Fmeditem fmedicalItems){
-        System.out.println("插入费用科目"+fmedicalItems);
         ResultDTO resultDTO = new ResultDTO();
         try {
             fmedicalItemsService.insert(fmedicalItems);
@@ -46,10 +45,26 @@ public class FmedicalItemsController {
 	@ResponseBody
     @RequestMapping("/delete")
     public ResultDTO<Fmeditem> delete(Integer id){
-        System.out.println("删除费用科目"+id);
         ResultDTO resultDTO = new ResultDTO();
         try {
             fmedicalItemsService.deleteById(id);
+            resultDTO.setStatus("OK");
+            resultDTO.setMsg("删除非药品成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultDTO.setStatus("ERROR");
+            resultDTO.setMsg("删除非药品失败！");
+        }
+        return resultDTO;
+    }
+	
+	//批量删除非药品 经id
+	@ResponseBody
+    @RequestMapping("/deletelist")
+    public ResultDTO<List<Fmeditem>> deleteFmeditems(@RequestBody List<Integer> ids){
+        ResultDTO resultDTO = new ResultDTO();
+        try {
+            fmedicalItemsService.deleteByList(ids);
             resultDTO.setStatus("OK");
             resultDTO.setMsg("删除非药品成功！");
         } catch (Exception e) {
@@ -64,7 +79,6 @@ public class FmedicalItemsController {
 	@ResponseBody
     @RequestMapping("/update")
     public ResultDTO<Fmeditem> update(@RequestBody Fmeditem fmedicalItems){
-        System.out.println("更新费用科目"+fmedicalItems);
         ResultDTO resultDTO = new ResultDTO();
         try {
             fmedicalItemsService.update(fmedicalItems);

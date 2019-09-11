@@ -9,17 +9,19 @@ import com.neuedu.pojo.Disecategory;
 public interface DiseaseTypeService {
 
     Integer insert(Disecategory diseaseType);
+    
     void deleteById(Integer id);
-    //void deleteByCode(String code);
-    //void deleteByName(String name);
-    //void deleteByType(String type);
+   
     void update(Disecategory diseaseType);
+    
     Disecategory getDiseaseTypeById(Integer id);
-    //List<DiseaseType> getDiseaseTypeByCode(String code);
-    //List<DiseaseType> getDiseaseTypeByName(String name);
-    //<DiseaseType> getDiseaseTypeByType(String type);
+   
     List<Disecategory> getAllDiseaseType();
     
-    //精确查询
-    List<Disecategory> getDiseaseType(Disecategory diseaseType);
+    //模糊查询
+    List<Disecategory> getDiseaseType(String name);
+    
+    void deleteByIds(List<Integer> ids);
+    
+    
 }

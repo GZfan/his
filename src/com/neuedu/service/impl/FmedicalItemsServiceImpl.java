@@ -19,7 +19,7 @@ public class FmedicalItemsServiceImpl implements FmedicalItemsService {
 	
 	@Override
 	public Integer insert(Fmeditem fmedicalItems) {
-		// TODO Auto-generated method stub
+		
 		fmedicalItemsMapper.insert(fmedicalItems);
 		Integer num=(int)fmedicalItemsMapper.countByExample(null);
 		fmedicalItems.setId(num);
@@ -28,7 +28,7 @@ public class FmedicalItemsServiceImpl implements FmedicalItemsService {
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
+		
 		Fmeditem fmedicalItems=fmedicalItemsMapper.selectByPrimaryKey(id);
 		fmedicalItems.setDelmark(0);
 		fmedicalItemsMapper.updateByPrimaryKeySelective(fmedicalItems);
@@ -36,13 +36,13 @@ public class FmedicalItemsServiceImpl implements FmedicalItemsService {
 
 	@Override
 	public void update(Fmeditem fmedicalItems) {
-		// TODO Auto-generated method stub
-		fmedicalItemsMapper.updateByPrimaryKey(fmedicalItems);
+		
+		fmedicalItemsMapper.updateByPrimaryKeySelective(fmedicalItems);
 	}
 
 	@Override
 	public List<Fmeditem> getFmedicalItems(Fmeditem fmedicalItems) {
-		// TODO Auto-generated method stub
+		
 		FmeditemExample fmeditemExample=new FmeditemExample();
 		FmeditemExample.Criteria criteria =fmeditemExample.createCriteria();
 		if(fmedicalItems.getItemcode()!=null)
@@ -64,15 +64,23 @@ public class FmedicalItemsServiceImpl implements FmedicalItemsService {
 		{
 			criteria.andDeptidEqualTo(fmedicalItems.getDeptid());
 		}
-		
+		criteria.andDelmarkEqualTo(1);
 		return fmedicalItemsMapper.selectByExample(fmeditemExample);
 	}
 
 	@Override
 	public Fmeditem getFmedicalItemsById(Integer id) {
-		// TODO Auto-generated method stub
 		
 		return fmedicalItemsMapper.selectByPrimaryKey(id);
+	}
+
+	@Override
+	public void deleteByList(List<Integer> list) {
+		Fmeditem fmeditem=new Fmeditem();
+		fmeditem.setDelmark(0);
+		FmeditemExample fmeditemExample=new FmeditemExample();
+		fmeditemExample.createCriteria().andIdIn(list);
+		fmedicalItemsMapper.updateByExampleSelective(fmeditem, fmeditemExample);
 	}
 
 }

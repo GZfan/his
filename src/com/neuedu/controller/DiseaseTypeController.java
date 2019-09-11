@@ -58,6 +58,23 @@ public class DiseaseTypeController {
         return resultDTO;
     }
     
+    //批量删除疾病类别
+    @ResponseBody
+    @RequestMapping("/deletelist")
+    public ResultDTO<Disecategory> deleteByids(@RequestBody List<Integer> ids){
+        ResultDTO resultDTO = new ResultDTO();
+        try {
+            diseaseTypeService.deleteByIds(ids);
+            resultDTO.setStatus("OK");
+            resultDTO.setMsg("删除疾病类别成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultDTO.setStatus("ERROR");
+            resultDTO.setMsg("删除疾病类别失败！");
+        }
+        return resultDTO;
+    }
+    
     
     //更新疾病类别
     @ResponseBody
@@ -94,14 +111,31 @@ public class DiseaseTypeController {
         return resultDTO;
     }
     
-    
-    //精确查找
+    //根据id获取
     @ResponseBody
-    @RequestMapping("/getDiseaseType")
-    public ResultDTO<Disecategory> getDiseaseType(@RequestBody Disecategory diseaseType){
+    @RequestMapping("/getbyid")
+    public ResultDTO<Disecategory> getDiseaseTypeById(int id){
         ResultDTO resultDTO = new ResultDTO();
         try {
-            resultDTO.setData(diseaseTypeService.getDiseaseType(diseaseType));
+            resultDTO.setData(diseaseTypeService.getDiseaseTypeById(id));
+            resultDTO.setStatus("OK");
+            resultDTO.setMsg("获取疾病类别成功！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultDTO.setStatus("ERROR");
+            resultDTO.setMsg("获取疾病类别失败！");
+        }
+        return resultDTO;
+    }
+    
+    
+    //模糊查找
+    @ResponseBody
+    @RequestMapping("/getDiseaseType")
+    public ResultDTO<Disecategory> getDiseaseType(String diseasename){
+        ResultDTO resultDTO = new ResultDTO();
+        try {
+            resultDTO.setData(diseaseTypeService.getDiseaseType(diseasename));
             resultDTO.setStatus("OK");
             resultDTO.setMsg("展示疾病类别成功！");
         } catch (Exception e) {
